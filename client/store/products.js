@@ -14,6 +14,7 @@ export const fetchProducts = () => {
       dispatch(_setProducts(products));
     } catch (error) {
       console.log("store/allProducts fetchProducts ERROR: ", error);
+      throw error;
     }
   };
 };
