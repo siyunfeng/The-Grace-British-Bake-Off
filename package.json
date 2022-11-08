@@ -1,7 +1,7 @@
 {
-  "name": "fs-app-template",
+  "name": "grace-shopper",
   "version": "2.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "It's our amazing Grace Shopper website. It balls so hard. I daresay, it is very, very fuego. Watch out: it's the good stuff. Oh yeah, baby. Good app. Yum. Love it.",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
@@ -17,7 +17,7 @@
     "test:dev:models": "npm run test:dev -- --grep=model",
     "test:dev:routes": "npm run test:dev -- --grep=route"
   },
-  "author": "Fullstack Academy of Code",
+  "author": "Lauren Baca, Allie Wang, Siyun Feng, and Christine Zheng (who is last but also not least)",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
