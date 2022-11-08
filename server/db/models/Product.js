@@ -6,6 +6,9 @@ const Product = db.define('product', {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   quantity: {
     type: DataTypes.INTEGER,
@@ -14,14 +17,19 @@ const Product = db.define('product', {
   price: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   imageUrl: {
     type: DataTypes.TEXT,
     defaultValue: 'https://i.redd.it/yf7n5w10byk41.jpg',
+    validate: {
+      isUrl: true,
+    },
   },
   description: {
     type: DataTypes.TEXT,
-    defaultValue: '',
   },
 });
 
