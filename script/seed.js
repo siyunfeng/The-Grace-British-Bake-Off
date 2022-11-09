@@ -6,6 +6,7 @@ const {
 } = require('../server/db');
 
 const { faker } = require('@faker-js/faker');
+const Order_Product = require('../server/db/models/Order_Product');
 
 /**
  * seed - this function clears the database, updates tables to
@@ -92,7 +93,62 @@ async function seed() {
 
   console.log(`seeded ${orders.length} orders`);
 
-  // TODO: Order_Products
+  // Order_Products
+
+  // const orderProductsArr = [];
+  // Array.from({ length: 10 }).forEach(() => {
+  //   orderProductsArr.push(
+  //     Order_Product.create({
+  //       num_items: Math.floor(Math.random() * 10 + 1),
+  //       item_total_price: 0.0,
+  //     })
+  //   );
+  // });
+
+  Order_Product.bulkCreate([
+    {
+      num_items: 4,
+      item_total_price: 0.0,
+      product_id: 12,
+      purchase_id: 1,
+    },
+    {
+      num_items: 2,
+      item_total_price: 0.0,
+      product_id: 3,
+      purchase_id: 1,
+    },
+    {
+      num_items: 7,
+      item_total_price: 0.0,
+      product_id: 18,
+      purchase_id: 1,
+    },
+  ]);
+
+  // const order_products = await Order_Product.findAll();
+  const order_products = await Promise.all(orderProductsArr);
+  console.log(order_products);
+
+  for (let i = 0; i < order_products.length; i++) {
+    await order_products[i].setITP();
+  }
+
+  // const order_products = await Promise.all(orderProductsArr);
+
+  // associate with some orders and some products
+  // assumes # of order_products <= # of orders, products
+  // sets correct price based on num_products and the price of the product associated
+
+  // for (let i = 0; i < order_products.length; i++) {
+  //   await order_products[i].setOrder(orders[i]);
+  //   await order_products[i].setProduct(products[i]);
+  //   await order_products[i].setOPPrice();
+  // }
+
+  // ${order_products.length}
+
+  console.log(`seeded order_products`);
 
   console.log(`seeded everything successfully`);
 
