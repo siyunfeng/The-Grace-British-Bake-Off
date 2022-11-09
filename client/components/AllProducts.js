@@ -13,7 +13,7 @@ class AllProducts extends React.Component {
 
   async componentDidMount() {
     // fetch the products data
-    await this.props.getProducts;
+    await this.props.getProducts();
     this.setState({ loading: false });
   }
 
@@ -35,7 +35,7 @@ class AllProducts extends React.Component {
           {hasProducts &&
             products.map((product) => (
               <div key={product.id}>
-                <Link to={`/products/${product.id}`}>
+                <Link to={`/shop/products/${product.id}`}>
                   <img src={product.imageUrl} />
                   <div className="product-detail">
                     <p>{product.name}</p>
