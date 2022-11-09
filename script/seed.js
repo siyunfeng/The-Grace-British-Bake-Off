@@ -6,6 +6,7 @@ const {
 } = require('../server/db');
 
 const { faker } = require('@faker-js/faker');
+const Order_Product = require('../server/db/models/Order_Product');
 
 /**
  * seed - this function clears the database, updates tables to
@@ -88,7 +89,29 @@ async function seed() {
 
   console.log(`seeded ${orders.length} orders`);
 
-  // TODO: Order_Products
+  // Order_Products
+  const orderProductArr = [];
+  Array.from({ length: 20 }).forEach(() => {
+    orderProductArr.push(
+      Order_Product.create({
+        fulfilled: Math.round(Math.random()),
+      })
+    );
+  });
+
+  // associate with some orders
+  // assumes # of order_products <= # of orders
+  for (let i = 0; i < orderProductArr.length; i++) {
+    await orderProductArr[i].setOrder(orders[i]);
+  }
+
+  // associate with some products
+  // assumes # of order_products <= # of products
+  for (let i = 0; i < orderProductArr.length; i++) {
+    await orderProductArr[i].setProduct(users[i]);
+  }
+
+  console.log(`seeded ${orderProductArr.length} order_products`);
 
   console.log(`seeded everything successfully`);
 

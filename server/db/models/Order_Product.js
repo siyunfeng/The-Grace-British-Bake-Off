@@ -8,13 +8,13 @@ const Order_Product = db.define('order_product', {
     autoIncrement: true,
     allowNull: false,
   },
-  num_items: {
+  num_products: {
     type: DataTypes.INTEGER,
     defaultValue: 1,
     validate: { min: 0 },
     allowNull: false,
   },
-  total_price: {
+  total_product_price: {
     type: DataTypes.DECIMAL(10, 2),
     validate: {
       notEmpty: true,
