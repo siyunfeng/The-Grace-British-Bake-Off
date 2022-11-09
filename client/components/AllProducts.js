@@ -26,20 +26,24 @@ class AllProducts extends React.Component {
       );
     } else {
       const { products } = this.props;
+      const checkProducts = products || [];
+      const hasProducts = checkProducts.length !== 0;
 
       return (
         <main>
-          {products.map((product) => (
-            <div key={product.id}>
-              <Link to={`/products/${product.id}`}>
-                <img src={product.imageUrl} />
-                <div className="product-detail">
-                  <p>{product.name}</p>
-                  <p>{product.price}</p>
-                </div>
-              </Link>
-            </div>
-          ))}
+          {!hasProducts && <h1>Products Coming Soon!</h1>}
+          {hasProducts &&
+            products.map((product) => (
+              <div key={product.id}>
+                <Link to={`/products/${product.id}`}>
+                  <img src={product.imageUrl} />
+                  <div className="product-detail">
+                    <p>{product.name}</p>
+                    <p>{product.price}</p>
+                  </div>
+                </Link>
+              </div>
+            ))}
         </main>
       );
     }
