@@ -26,9 +26,10 @@ const User = db.define('user', {
       isEmail: true,
     },
   },
-  type: {
+  userType: {
     type: Datatypes.ENUM('CUSTOMER', 'ADMIN'),
     defaultValue: 'CUSTOMER',
+    allowNull: false,
   },
 });
 
