@@ -28,11 +28,25 @@ class singleProduct extends React.Component {
           <div key={product.id}>
             <img src={product.imageUrl} />
             <div>
-              <div>{product.name}</div>
-              <div>{product.price}</div>
-              <div>{product.quantity}</div>
+              <div>Name: {product.name}</div>
+              <div>Price: ${product.price}</div>
+              <div>Quantity: {product.quantity}</div>
+              {product.quantity ? (
+                <input
+                  type="number"
+                  id="purchase-amount"
+                  name="purchaseAmount"
+                  min="1"
+                  max="100"
+                />
+              ) : (
+                <span>Out of Stock</span>
+              )}
               <button type="button">Add to Cart</button>
-              <div>{product.description}</div>
+              <div>
+                Product information:
+                <p>{product.description}</p>
+              </div>
             </div>
           </div>
         ) : (
@@ -45,7 +59,7 @@ class singleProduct extends React.Component {
 
 const mapState = (state) => {
   return {
-    product: state.product,
+    product: state.singleProduct,
   };
 };
 
