@@ -14,6 +14,17 @@ const User = db.define('user', {
   },
   password: {
     type: Datatypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  email: {
+    type: Datatypes.STRING,
+    unique: true,
+    validate: {
+      isEmail: true,
+    },
   },
   type: {
     type: Datatypes.ENUM('CUSTOMER', 'ADMIN'),
