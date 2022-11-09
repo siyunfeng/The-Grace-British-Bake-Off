@@ -9,34 +9,34 @@ const Order_Product = db.define('order_product', {
     autoIncrement: true,
     allowNull: false,
   },
-  num_products: {
+  num_items: {
     type: DataTypes.INTEGER,
-    defaultValue: 1,
-    validate: { min: 0 },
+    validate: { min: 1 },
     allowNull: false,
   },
-  order_product_price: {
+  item_total_price: {
     type: DataTypes.DECIMAL(10, 2),
     validate: {
       notEmpty: true,
     },
-    allowNull: false,
   },
 });
 
-Order_Product.prototype.setOPPrice = async function () {
+Order_Product.prototype.setITP = async function () {
   try {
     const product = await Product.findByPk(this.product_id);
-    // console.log('product associated with OP: ', product);
-    const num_prodDecimalized = this.num_products.toFixed(2);
-    // console.log(num_prodDecimalized);
-    let oPPrice = num_prodDecimalized * product.price;
-    oPPrice = oPPrice.toFixed(2);
-    // console.log('oPPrice: ', oPPrice);
+    console.log('product associated with OP: ', product);
 
-    console.log(this);
+    // const ITPDecimalized = this.item_total_price.toFixed(2);
+    // console.log(ITPDecimalized);
 
-    this.order_product_price = oPPrice;
+    let ITP = this.num_items * product.price;
+    ITP = ITP.toFixed(2);
+    console.log('ITP: ', ITP);
+
+    // console.log(this);
+
+    this.item_total_price = ITP;
   } catch (error) {
     throw error;
   }
