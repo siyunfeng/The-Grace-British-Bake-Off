@@ -29,6 +29,16 @@ async function seed() {
     );
   });
 
+  // create an generic user so we (devs) know the password
+  usersArr.push(
+    User.create({
+      username: 'Lallie_yunstine',
+      password: '123',
+      email: 'best_customer@graceshopper.com',
+      userType: 'CUSTOMER',
+    })
+  );
+
   // create an admin
   usersArr.push(
     User.create({
