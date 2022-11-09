@@ -5,7 +5,6 @@ const DELETE_PRODUCT = "DELETE_PRODUCT";
 const DECREASE_PRODUCT_QUANTITY = "DECREASE_PRODUCT_QUANTITY";
 
 const _setProduct = (product) => ({ type: SET_PRODUCT, product });
-const _deleteProduct = (product) => ({ type: DELETE_PRODUCT, product });
 const _decreaseProductQuantity = (product) => ({
   type: DECREASE_PRODUCT_QUANTITY,
   product,
@@ -29,8 +28,6 @@ export default function singleProductReducer(state = initialState, action) {
   switch (action.type) {
     case SET_PRODUCT:
       return action.product;
-    case DELETE_PRODUCT:
-      return state.filter((product) => product.id !== action.product.id);
     case DECREASE_PRODUCT_QUANTITY:
       if (action.product.quantity > 0) {
         let updatedQuantity = action.product.quantity - 1;
