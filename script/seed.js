@@ -94,28 +94,27 @@ async function seed() {
   console.log(`seeded ${orders.length} orders`);
 
   // Order_Products
-  const orderProductArr = [];
-  Array.from({ length: 20 }).forEach(() => {
-    orderProductArr.push(
+  const orderProductsArr = [];
+  Array.from({ length: 10 }).forEach(() => {
+    orderProductsArr.push(
       Order_Product.create({
-        fulfilled: Math.round(Math.random()),
+        num_products: Math.floor(Math.random() * 10 + 1),
+        order_product_price: 0.0,
       })
     );
   });
+  const order_products = await Promise.all(orderProductsArr);
 
-  // associate with some orders
-  // assumes # of order_products <= # of orders
-  for (let i = 0; i < orderProductArr.length; i++) {
-    await orderProductArr[i].setOrder(orders[i]);
+  // associate with some orders and some products
+  // assumes # of order_products <= # of orders, products
+  // sets correct price based on num_products and the price of the product associated
+  for (let i = 0; i < order_products.length; i++) {
+    await order_products[i].setOrder(orders[i]);
+    await order_products[i].setProduct(products[i]);
+    await order_products[i].setOPPrice();
   }
 
-  // associate with some products
-  // assumes # of order_products <= # of products
-  for (let i = 0; i < orderProductArr.length; i++) {
-    await orderProductArr[i].setProduct(users[i]);
-  }
-
-  console.log(`seeded ${orderProductArr.length} order_products`);
+  console.log(`seeded ${order_products.length} order_products`);
 
   console.log(`seeded everything successfully`);
 
