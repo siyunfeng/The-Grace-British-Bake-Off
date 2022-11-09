@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 const {
   db,
-  models: { User, Product },
-} = require("../server/db");
+  models: { User, Product, Order },
+} = require('../server/db');
 
-const { faker } = require("@faker-js/faker");
+const { faker } = require('@faker-js/faker');
 
 /**
  * seed - this function clears the database, updates tables to
@@ -14,7 +14,7 @@ const { faker } = require("@faker-js/faker");
 
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
-  console.log("db synced!");
+  console.log('db synced!');
 
   // Creating Users
   const usersArr = [];
@@ -23,8 +23,8 @@ async function seed() {
       User.create({
         username: faker.internet.userName(),
         password: faker.internet.password(),
-        //email: faker.internet.email(),
-        //userType: "customer"
+        email: faker.internet.email(),
+        userType: 'CUSTOMER',
       })
     );
   });
@@ -32,24 +32,23 @@ async function seed() {
   // create an admin
   usersArr.push(
     User.create({
-      username: "grace_shopper_admin",
-      password: "123",
-      // email: "admin@graceshopper.com",
-      // userType: "admin",
+      username: 'grace_shopper_admin',
+      password: '123',
+      email: 'admin@graceshopper.com',
+      userType: 'ADMIN',
     })
   );
 
   const users = await Promise.all(usersArr);
 
   console.log(`seeded ${users.length} users`);
-  console.log(`seeded successfully`);
 
   // Products
   const productsArr = [];
   Array.from({ length: 100 }).forEach((value, idx) => {
     productsArr.push(
       Product.create({
-        name: faker.commerce.productName() + " " + idx,
+        name: faker.commerce.productName() + ' ' + idx, // added idx to the end to make sure name's uniqueness
         quantity: Math.floor(Math.random() * 100 + 1),
         price: faker.commerce.price(),
         description: faker.commerce.productDescription(),
@@ -59,7 +58,35 @@ async function seed() {
   const products = await Promise.all(productsArr);
 
   console.log(`seeded ${products.length} products`);
-  console.log(`seeded successfully`);
+
+  // Orders
+  const ordersArr = [];
+  Array.from({ length: 10 }).forEach(() => {
+    ordersArr.push(
+      Order.create({
+        fulfilled: Math.round(Math.random()),
+      })
+    );
+  });
+  const orders = await Promise.all(ordersArr);
+
+  // associate with some users
+  // assumes # of orders <= # of users
+  for (let i = 0; i < orders.length; i++) {
+    await orders[i].setUser(users[i]);
+  }
+
+  console.log(`seeded ${orders.length} orders`);
+
+  // TODO: Order_Products
+
+  console.log(`seeded everything successfully`);
+
+  // for testing maybe
+  return users.reduce((allUsers, user) => {
+    allUsers[user.name] = user;
+    return allUsers;
+  }, {});
 }
 
 /*
@@ -68,16 +95,16 @@ async function seed() {
  The `seed` function is concerned only with modifying the database.
 */
 async function runSeed() {
-  console.log("seeding...");
+  console.log('seeding...');
   try {
     await seed();
   } catch (err) {
     console.error(err);
     process.exitCode = 1;
   } finally {
-    console.log("closing db connection");
+    console.log('closing db connection');
     await db.close();
-    console.log("db connection closed");
+    console.log('db connection closed');
   }
 }
 
