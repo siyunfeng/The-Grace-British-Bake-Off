@@ -111,7 +111,7 @@ async function seed() {
   for (let i = 0; i < order_products.length; i++) {
     await order_products[i].setOrder(orders[i]);
     await order_products[i].setProduct(products[i]);
-    await order_products[i].setOPPrice();
+    // await order_products[i].setOPPrice();
   }
 
   console.log(`seeded ${order_products.length} order_products`);
