@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('../db');
 
-const Order_Product = db.define('order', {
+const Order_Product = db.define('order_product', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -16,10 +16,10 @@ const Order_Product = db.define('order', {
   },
   total_price: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
     validate: {
       notEmpty: true,
     },
+    allowNull: false,
   },
 });
 

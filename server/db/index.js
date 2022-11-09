@@ -11,8 +11,14 @@ const Order_Product = require('./models/Order_Product');
 User.hasMany(Order);
 Order.belongsTo(User);
 
-Order.belongsToMany(Product, { through: Order_Product });
-Product.belongsToMany(Order, { through: Order_Product });
+Order.belongsToMany(Product, {
+  through: 'order_product',
+  foreignKey: 'purchase_id',
+});
+Product.belongsToMany(Order, {
+  through: 'order_product',
+  foreignKey: 'product_id',
+});
 
 module.exports = {
   db,
@@ -20,6 +26,6 @@ module.exports = {
     User,
     Product,
     Order,
-    Order_Product,
+    // Order_Product,
   },
 };
