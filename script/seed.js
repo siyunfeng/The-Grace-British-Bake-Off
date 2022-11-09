@@ -17,7 +17,11 @@ async function seed() {
   console.log('db synced!');
 
   // Creating Users
-  const usersArr = [];
+  const usersArr = [
+    User.create({ username: 'cody', password: '123' }),
+    User.create({ username: 'murphy', password: '123' }),
+  ];
+
   Array.from({ length: 50 }).forEach(() => {
     usersArr.push(
       User.create({
@@ -92,11 +96,13 @@ async function seed() {
 
   console.log(`seeded everything successfully`);
 
-  // for testing maybe
-  return users.reduce((allUsers, user) => {
-    allUsers[user.name] = user;
-    return allUsers;
-  }, {});
+  // for testing
+  return {
+    users: {
+      cody: users[0],
+      murphy: users[1],
+    },
+  };
 }
 
 /*
