@@ -18,3 +18,14 @@ export const fetchUser = (userId) => {
     }
   };
 };
+
+const initialState = {};
+
+export default function singleUserReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_USER:
+      return action.user;
+    default:
+      return state;
+  }
+}
