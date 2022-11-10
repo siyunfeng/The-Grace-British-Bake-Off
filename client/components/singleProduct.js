@@ -25,28 +25,41 @@ class singleProduct extends React.Component {
       <main>
         {loading && <p>Loading product details...</p>}
         {product ? (
-          <div key={product.id}>
-            <img src={product.imageUrl} />
+          <div key={product.id} className="single-product-layout">
             <div>
-              <div>Name: {product.name}</div>
-              <div>Price: ${product.price}</div>
-              <div>Quantity: {product.quantity}</div>
+              <img className="single-product-img" src={product.imageUrl} />
+            </div>
+            <div className="product-info">
+              <div>
+                <h1>{product.name}</h1>
+              </div>
+              <h2>${product.price}</h2>
+              <div>
+                <h3>Product detail:</h3>
+                <p>{product.description}</p>
+              </div>
+              <div>Stock: {product.quantity}</div>
               {product.quantity ? (
-                <input
-                  type="number"
-                  id="purchase-amount"
-                  name="purchaseAmount"
-                  min="1"
-                  max="100"
-                />
+                <div className="purchase-container">
+                  <input
+                    className="purchase-option"
+                    type="number"
+                    id="purchase-amount"
+                    name="purchaseAmount"
+                    min="1"
+                    max={product.quantity}
+                  />
+                  <button
+                    className="purchase-option"
+                    id="add-to-cart-button"
+                    type="button"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               ) : (
                 <span>Out of Stock</span>
               )}
-              <button type="button">Add to Cart</button>
-              <div>
-                Product information:
-                <p>{product.description}</p>
-              </div>
             </div>
           </div>
         ) : (

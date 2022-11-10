@@ -32,18 +32,20 @@ class AllProducts extends React.Component {
       return (
         <main>
           {!hasProducts && <h1>Products Coming Soon!</h1>}
-          {hasProducts &&
-            products.map((product) => (
-              <div key={product.id}>
-                <Link to={`/shop/products/${product.id}`}>
-                  <img src={product.imageUrl} />
-                  <div className="product-detail">
-                    <p>{product.name}</p>
-                    <p>{product.price}</p>
-                  </div>
-                </Link>
-              </div>
-            ))}
+          <div className="all-products-layout">
+            {hasProducts &&
+              products.map((product) => (
+                <div key={product.id} className="each-product-layout">
+                  <Link to={`/shop/products/${product.id}`}>
+                    <img className="all-products-img" src={product.imageUrl} />
+                    <div className="product-detail">
+                      <p>{product.name}</p>
+                      <p>${product.price}</p>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+          </div>
         </main>
       );
     }
