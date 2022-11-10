@@ -6,7 +6,7 @@ import auth from './auth';
 import products from './products';
 import singleProduct from './singleProduct';
 
-const reducer = combineReducers({
+export const reducer = combineReducers({
   auth,
   products,
   singleProduct,

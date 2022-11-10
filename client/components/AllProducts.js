@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../store';
 
-class AllProducts extends React.Component {
+export class AllProducts extends React.Component {
   constructor() {
     super();
     this.state = {
