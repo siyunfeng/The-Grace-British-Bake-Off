@@ -29,13 +29,13 @@ class singleProduct extends React.Component {
             <div>
               <img className="single-product-img" src={product.imageUrl} />
             </div>
-            <div>
+            <div className="product-info">
               <div>
                 <h1>{product.name}</h1>
               </div>
               <h2>${product.price}</h2>
               <div>
-                <h3>Product information:</h3>
+                <h3>Product detail:</h3>
                 <p>{product.description}</p>
               </div>
               <div>Stock: {product.quantity}</div>

@@ -58,12 +58,17 @@ form div {
   align-items: flex-start;
   justify-content: space-evenly;
   text-align: left;
-  margin: 8em;
+  margin: 6em;
 }
 
 .single-product-img {
   width: 800px;
   border-radius: 20px;
+}
+
+.product-info {
+  padding-left: 6em;
+  width: 50%;
 }
 
 .purchase-container {
@@ -72,7 +77,7 @@ form div {
 }
 
 .purchase-option {
-  margin: 1em;
+  margin-top: 1em;
   font-size: 16pt;
   height: 50px;
   width: 180px;
@@ -83,4 +88,5 @@ form div {
   border-color: white;
   color: white;
   background-color: green;
+  margin-left: 1.5em;
 }
