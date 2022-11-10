@@ -10,6 +10,7 @@ export const reducer = combineReducers({
   auth,
   products,
   singleProduct,
+  users,
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
