@@ -4,7 +4,7 @@ import axios from 'axios';
 const SET_PRODUCTS = 'SET_PRODUCTS';
 
 // Action Creator:
-const _setProducts = (products) => ({ type: SET_PRODUCTS, products });
+export const _setProducts = (products) => ({ type: SET_PRODUCTS, products });
 
 // Thunk:
 export const fetchProducts = () => {
