@@ -6,6 +6,7 @@ import Home from './components/Home';
 import AllProducts from './components/AllProducts';
 import singleProduct from './components/singleProduct';
 import { me } from './store';
+import AdminPage from './components/AdminPage';
 
 /**
  * COMPONENT
