@@ -21,7 +21,9 @@ describe('Cart routes', () => {
       console.log(res.body);
 
       expect(res.body).to.be.an('object');
-      // expect(res.body).to.deep.equal({ test: 'test to see what res.body is' });
+      // expect(res.body).to.deep.equal({
+      //   test: 'test to see what if res.body has correct info',
+      // });
     });
   }); // end describe('/api/cart/:orderId')
 }); // end describe('Cart routes')

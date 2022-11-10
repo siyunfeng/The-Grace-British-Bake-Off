@@ -4,9 +4,6 @@ const {
 } = require('../db');
 module.exports = router;
 
-// what are we trying to display here?
-// should display all the products on order_products associated with this order
-
 router.get('/:orderId', async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
