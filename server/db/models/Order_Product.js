@@ -22,21 +22,11 @@ const Order_Product = db.define('order_product', {
   },
 });
 
-Order_Product.prototype.setITP = async function () {
+Order_Product.prototype.setItemTotalPrice = async function () {
   try {
-    const product = await Product.findByPk(this.product_id);
-    console.log('product associated with OP: ', product);
-
-    // const ITPDecimalized = this.item_total_price.toFixed(2);
-    // console.log(ITPDecimalized);
-
-    let ITP = this.num_items * product.price;
-    ITP = ITP.toFixed(2);
-    console.log('ITP: ', ITP);
-
-    // console.log(this);
-
-    this.item_total_price = ITP;
+    const product = await Product.findByPk(this.productId);
+    this.setDataValue('item_total_price', this.num_items * product.price);
+    await this.save();
   } catch (error) {
     throw error;
   }

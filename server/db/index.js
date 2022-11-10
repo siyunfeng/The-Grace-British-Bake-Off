@@ -14,17 +14,16 @@ Order.belongsTo(User);
 // Super Many-to-Many relationship here. For details and usage:
 // https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/#the-best-of-both-worlds-the-super-many-to-many-relationship
 Order.belongsToMany(Product, {
-  through: 'order_product',
-  foreignKey: 'purchase_id',
+  through: Order_Product,
 });
 Product.belongsToMany(Order, {
-  through: 'order_product',
-  foreignKey: 'product_id',
+  through: Order_Product,
 });
-Order.hasMany(Order_Product, { foreignKey: 'purchase_id' });
-Order_Product.belongsTo(Order, { foreignKey: 'purchase_id' });
-Product.hasMany(Order_Product, { foreignKey: 'product_id' });
-Order_Product.belongsTo(Product, { foreignKey: 'product_id' });
+
+Order.hasMany(Order_Product);
+Order_Product.belongsTo(Order);
+Product.hasMany(Order_Product);
+Order_Product.belongsTo(Product);
 
 module.exports = {
   db,
