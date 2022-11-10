@@ -7,6 +7,7 @@ import products from './products';
 import singleProduct from './singleProduct';
 import users from './users';
 import singleUser from './singleUser';
+import order from './temp-order'; // NOTE: need to merge and change name
 import cart from './cart';
 
 export const reducer = combineReducers({
@@ -15,6 +16,7 @@ export const reducer = combineReducers({
   singleProduct,
   users,
   singleUser,
+  order,
   cart,
 });
 const middleware = composeWithDevTools(
@@ -28,4 +30,5 @@ export * from './products';
 export * from './singleProduct';
 export * from './users';
 export * from './singleUser';
+export * from './temp-order'; // NOTE: need to merge and change name
 export * from './cart';

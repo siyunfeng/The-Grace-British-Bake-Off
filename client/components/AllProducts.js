@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../store';
+import { fetchProducts, createOrder } from '../store';
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -15,6 +15,21 @@ export class AllProducts extends React.Component {
     // fetch the products data
     await this.props.getProducts();
     this.setState({ loading: false });
+
+    if (!this.props.user) {
+      // if that's a guest
+      console.log('This is a guest. Order ', this.props.order);
+
+      if (!this.props.order.id) {
+        await this.props.createOrder();
+        console.log('create order successfully! new order:', this.props.order);
+      } else {
+        console.log('order id exists: ', this.props.order.id);
+      }
+    } else {
+      // if that's an auth user
+      console.log('This is an auth user');
+    }
   }
 
   render() {
@@ -55,12 +70,15 @@ export class AllProducts extends React.Component {
 const mapState = (state) => {
   return {
     products: state.products,
+    user: state.auth.username,
+    order: state.order,
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     getProducts: () => dispatch(fetchProducts()),
+    createOrder: () => dispatch(createOrder()),
   };
 };
 
