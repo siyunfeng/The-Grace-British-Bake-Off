@@ -6,11 +6,11 @@ module.exports = router;
 
 router.get('/:orderId', async (req, res, next) => {
   try {
-    const cartOrder = await Order.findByPk(req.params.orderId);
-
-    // what are we trying to display here?
-    // should display all the products on order_products associated with this order
-    //
+    const cartOrder = await Order.findOne({
+      where: { id: req.params.orderId },
+      include: { model: Order_Product, include: { model: Product } },
+    });
+    res.json(cartOrder);
   } catch (err) {
     next(err);
   }
