@@ -121,7 +121,7 @@ async function seed() {
       var r = Math.floor(Math.random() * 10);
       if (arr.indexOf(r) === -1) arr.push(r);
     }
-    // because the random numbers were < 1
+    // because the random numbers were < 10
     // and we have 21 order_products
     // we will likely get some repeated order numbers hopefully...
     await order_products[i].setOrder(orders[arr[0]]);
