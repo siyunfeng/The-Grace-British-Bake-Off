@@ -29,6 +29,7 @@ class Cart extends React.Component {
         {cart ? (
           <div key={cart.id} className="cart-layout">
             <div className="cart-info">
+              <div>Lauren's working on it!</div>
               {/* {product.quantity ? (
                 <div className="purchase-container">
                   <input
