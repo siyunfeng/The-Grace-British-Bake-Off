@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProduct } from '../store/singleProduct';
-import { createOrder } from '../store';
+import { createOrder, addToCart } from '../store';
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -10,6 +10,7 @@ class SingleProduct extends React.Component {
     this.state = {
       loading: true,
       errorMessage: '',
+      quantityInput: 1,
     };
     this.handleQuantityInput = this.handleQuantityInput.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
@@ -17,7 +18,11 @@ class SingleProduct extends React.Component {
 
   handleQuantityInput(event) {
     const purchaseInput = event.target.value;
+    this.setState({ quantityInput: purchaseInput });
+
+    // input validation
     const { quantity } = this.props.product;
+
     if (purchaseInput > quantity) {
       this.setState({
         errorMessage: `There are only ${quantity} item${
@@ -31,8 +36,13 @@ class SingleProduct extends React.Component {
     }
   }
 
-  handleAddToCart(product) {
-    this.props.addToCart(this.props.order.id, product);
+  handleAddToCart(event, product) {
+    event.preventDefault();
+    const { errorMessage, quantityInput } = this.state;
+    const { addToCart, order } = this.props;
+    if (errorMessage.length === 0) {
+      addToCart(order.id, product, quantityInput);
+    }
   }
 
   async componentDidMount() {
@@ -61,7 +71,7 @@ class SingleProduct extends React.Component {
 
   render() {
     const { product } = this.props;
-    const { loading, errorMessage } = this.state;
+    const { loading, errorMessage, quantityInput } = this.state;
     const { handleAddToCart, handleQuantityInput } = this;
 
     return (
@@ -92,13 +102,14 @@ class SingleProduct extends React.Component {
                       name="purchaseAmount"
                       min="1"
                       max={product.quantity}
+                      value={quantityInput}
                       onChange={handleQuantityInput}
                     />
                     <button
                       className="purchase-option"
                       id="add-to-cart-button"
                       type="button"
-                      onClick={() => handleAddToCart(product)}
+                      onClick={(event) => handleAddToCart(event, product)}
                     >
                       Add to Cart
                     </button>
@@ -130,7 +141,8 @@ const mapDispatch = (dispatch) => {
   return {
     getProduct: (productId) => dispatch(fetchProduct(productId)),
     createOrder: () => dispatch(createOrder()),
-    // addToCart: (orderId, product) => dispatch(addToCart(orderId, product)),
+    addToCart: (orderId, product, quantityInput) =>
+      dispatch(addToCart(orderId, product, quantityInput)),
   };
 };
 

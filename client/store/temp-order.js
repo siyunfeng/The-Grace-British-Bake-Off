@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const CREATE_ORDER = 'CREATE_ORDER';
-// const ADD_TO_CART = 'ADD_TO_CART';
 
 const _createOrder = (order) => ({ type: CREATE_ORDER, order });
 
@@ -21,7 +20,6 @@ export const createOrder = () => {
   };
 };
 
-// addToCart(orderId, product)
 const initialState = {};
 
 export default function tempOrderReducer(state = initialState, action) {
