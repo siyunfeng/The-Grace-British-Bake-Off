@@ -34,7 +34,7 @@ class Routes extends Component {
         ) : isLoggedIn && userType === 'ADMIN' ? (
           <Switch>
             <Route exact path="/manage" component={AdminPage} />
-            <Route exact path="/manage/users" component={AllUsers} />
+            <Route path="/manage/users" component={AllUsers} />
             <Route path="/manage/products" component={AdminAllProducts} />
             <Redirect to="/manage" />
           </Switch>
