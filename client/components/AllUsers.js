@@ -28,8 +28,14 @@ export class AllUsers extends React.Component {
 
       return (
         <main>
-          {!hasUsers && <h1>Users Coming Soon!</h1>}
-          <div>{hasUsers && <UsersList users={users} />}</div>
+          {hasUsers ? (
+            <div>
+              <p>Total # of users: {users.length}</p>
+              <UsersList users={users} />
+            </div>
+          ) : (
+            <h1>Users Coming Soon!</h1>
+          )}
         </main>
       );
     }

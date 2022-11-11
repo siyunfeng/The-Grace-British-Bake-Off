@@ -1,10 +1,10 @@
 import React from 'react';
-import AdminUserCard from './AdminUserCard';
+import UserCard from './UserCard';
 
 const UsersList = (props) => (
   <div className="all-users-layout">
     {props.users.map((user) => (
-      <AdminUserCard key={user.id} user={user} />
+      <UserCard key={user.id} user={user} />
     ))}
   </div>
 );
