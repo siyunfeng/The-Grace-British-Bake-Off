@@ -9,14 +9,17 @@ const AdminProductCard = (props) => {
   return (
     <div className="admin-each-product-layout">
       <Link to="todo">
-        <img src={product.imageUrl} />
+        <img className="admin-product-img" src={product.imageUrl} />
       </Link>
       <div className="admin-product-detail">
         <p>{product.name}</p>
-        <p>{product.price}</p>
-        <p>{product.quantity}</p>
+        <p>Price: {product.price}</p>
+        <p>Stock: {product.quantity}</p>
       </div>
-      <button className="delete-button" onClick={() => handleDelete(product)}>
+      <button
+        className="admin-product-delete-button"
+        onClick={() => handleDelete(product)}
+      >
         Delete
       </button>
     </div>
