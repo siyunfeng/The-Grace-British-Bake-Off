@@ -9,12 +9,31 @@ class SingleProduct extends React.Component {
     super();
     this.state = {
       loading: true,
+      errorMessage: '',
     };
+    this.handleQuantityInput = this.handleQuantityInput.bind(this);
+    this.handleAddToCart = this.handleAddToCart.bind(this);
   }
 
-  // handleAddToCart(product) {
-  //   this.props.addToCart(this.props.order.id, product);
-  // }
+  handleQuantityInput(event) {
+    const purchaseInput = event.target.value;
+    const { quantity } = this.props.product;
+    if (purchaseInput > quantity) {
+      this.setState({
+        errorMessage: `There are only ${quantity} item${
+          quantity > 1 ? 's' : ''
+        } in stock.`,
+      });
+    } else if (purchaseInput < 1) {
+      this.setState({ errorMessage: 'Please enter a valid quantity.' });
+    } else {
+      this.setState({ errorMessage: '' });
+    }
+  }
+
+  handleAddToCart(product) {
+    this.props.addToCart(this.props.order.id, product);
+  }
 
   async componentDidMount() {
     const { productId } = this.props.match.params;
@@ -42,8 +61,8 @@ class SingleProduct extends React.Component {
 
   render() {
     const { product } = this.props;
-    const { loading } = this.state;
-    const { handleAddToCart } = this;
+    const { loading, errorMessage } = this.state;
+    const { handleAddToCart, handleQuantityInput } = this;
 
     return (
       <main>
@@ -64,23 +83,27 @@ class SingleProduct extends React.Component {
               </div>
               <div>Stock: {product.quantity}</div>
               {product.quantity ? (
-                <div className="purchase-container">
-                  <input
-                    className="purchase-option"
-                    type="number"
-                    id="purchase-amount"
-                    name="purchaseAmount"
-                    min="1"
-                    max={product.quantity}
-                  />
-                  <button
-                    className="purchase-option"
-                    id="add-to-cart-button"
-                    type="button"
-                    // onClick={handleAddToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
+                <div>
+                  <div className="purchase-container">
+                    <input
+                      className="purchase-option"
+                      type="number"
+                      id="purchase-amount"
+                      name="purchaseAmount"
+                      min="1"
+                      max={product.quantity}
+                      onChange={handleQuantityInput}
+                    />
+                    <button
+                      className="purchase-option"
+                      id="add-to-cart-button"
+                      type="button"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                  {errorMessage.length > 0 && <p>{errorMessage}</p>}
                 </div>
               ) : (
                 <span>Out of Stock</span>
