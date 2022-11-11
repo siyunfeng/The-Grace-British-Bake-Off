@@ -5,8 +5,8 @@ const UsersList = (props) => (
     {props.users.map((user) => (
       <div key={user.id} className="each-user-layout">
         <div className="user-detail">
-          <p>{user.userName}</p>
-          <p>${user.email}</p>
+          <p>Name: {user.username}</p>
+          <p>Email: {user.email || 'N/A'}</p>
         </div>
       </div>
     ))}

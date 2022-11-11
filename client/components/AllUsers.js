@@ -10,6 +10,10 @@ export class AllUsers extends React.Component {
       loading: true,
     };
   }
+  async componentDidMount() {
+    await this.props.getUsers();
+    this.setState({ loading: false });
+  }
   render() {
     if (this.state.loading) {
       return (

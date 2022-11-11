@@ -20,7 +20,6 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn, userType } = this.props;
-
     return (
       <div>
         {isLoggedIn && userType === 'CUSTOMER' ? (
@@ -33,9 +32,10 @@ class Routes extends Component {
           </Switch>
         ) : isLoggedIn && userType === 'ADMIN' ? (
           <Switch>
-            <Route path="/manage" component={AdminPage} />
+            <Route exact path="/manage" component={AdminPage} />
             <Route path="/manage/users" component={AllUsers} />
             <Route path="/manage/products" component={AllProducts} />
+            <Redirect to="/manage" />
           </Switch>
         ) : (
           <Switch>
