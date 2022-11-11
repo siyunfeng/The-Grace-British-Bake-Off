@@ -47,9 +47,7 @@ export class AllProducts extends React.Component {
       return (
         <main>
           {!hasProducts && <h1>Products Coming Soon!</h1>}
-          <div className="all-products-layout">
-            {hasProducts && <ProductsList products={products} />}
-          </div>
+          <div>{hasProducts && <ProductsList products={products} />}</div>
         </main>
       );
     }
