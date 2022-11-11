@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts, createOrder } from '../store';
+import ProductsList from './ProductsList';
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -48,18 +48,7 @@ export class AllProducts extends React.Component {
         <main>
           {!hasProducts && <h1>Products Coming Soon!</h1>}
           <div className="all-products-layout">
-            {hasProducts &&
-              products.map((product) => (
-                <div key={product.id} className="each-product-layout">
-                  <Link to={`/shop/products/${product.id}`}>
-                    <img className="all-products-img" src={product.imageUrl} />
-                    <div className="product-detail">
-                      <p>{product.name}</p>
-                      <p>${product.price}</p>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+            {hasProducts && <ProductsList products={products} />}
           </div>
         </main>
       );
