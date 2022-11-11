@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProduct } from '../store/singleProduct';
-import { createOrder, addToCart } from '../store';
+import { createOrder, addToCart, getOrder } from '../store';
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -46,25 +46,28 @@ class SingleProduct extends React.Component {
   }
 
   async componentDidMount() {
+    const { user, order, getProduct, createOrder, getExistingOrder } =
+      this.props;
     const { productId } = this.props.match.params;
-    await this.props.getProduct(productId);
+
+    await getProduct(productId);
     this.setState({ loading: false });
 
-    if (!this.props.user) {
-      // if that's a guest
-      console.log('This is a guest. Order ', this.props.order);
+    // if guest
+    if (!user) {
+      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
+      console.log('existingOrder >>>> ', existingOrder);
 
-      if (!this.props.order.id) {
-        await this.props.createOrder();
-        console.log('create order successfully! new order:', this.props.order);
+      if (!order.id && !existingOrder) {
+        await createOrder();
+        console.log('created order successfully! new order:', order);
       } else {
-        console.log('order id exists: ', this.props.order.id);
+        await getExistingOrder(existingOrder.id);
       }
     } else {
-      // if that's an auth user
       console.log('This is an auth user');
       // check if user already have existing order
-      // check order table where userId = this.props.user.id (fulfilled: false)
+      // check order table where userId = user.id (fulfilled: false)
       // if user have existing order : return order
     }
   }
@@ -143,6 +146,7 @@ const mapDispatch = (dispatch) => {
     createOrder: () => dispatch(createOrder()),
     addToCart: (orderId, product, quantityInput) =>
       dispatch(addToCart(orderId, product, quantityInput)),
+    getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
   };
 };
 
