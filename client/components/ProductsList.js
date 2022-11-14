@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProductsList = (props) => (
-  <div>
+  <div className="all-products-layout">
     {props.products.map((product) => (
       <div key={product.id} className="each-product-layout">
         <Link to={`/shop/products/${product.id}`}>

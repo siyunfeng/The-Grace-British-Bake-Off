@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchProducts, createOrder } from '../store';
+import { fetchProducts, createOrder, getOrder } from '../store';
 import ProductsList from './ProductsList';
 
 export class AllProducts extends React.Component {
@@ -12,19 +12,23 @@ export class AllProducts extends React.Component {
   }
 
   async componentDidMount() {
+    const { user, order, getProducts, createOrder, getExistingOrder } =
+      this.props;
+
     // fetch the products data
-    await this.props.getProducts();
+    await getProducts();
     this.setState({ loading: false });
 
-    if (!this.props.user) {
-      // if that's a guest
-      console.log('This is a guest. Order ', this.props.order);
+    // if guest
+    if (!user) {
+      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
+      console.log('existingOrder >>>> ', existingOrder);
 
-      if (!this.props.order.id) {
-        await this.props.createOrder();
-        console.log('create order successfully! new order:', this.props.order);
+      if (!order.id && !existingOrder) {
+        await createOrder();
+        console.log('create order successfully! new order:', order);
       } else {
-        console.log('order id exists: ', this.props.order.id);
+        await getExistingOrder(existingOrder.id);
       }
     } else {
       // if that's an auth user
@@ -47,9 +51,7 @@ export class AllProducts extends React.Component {
       return (
         <main>
           {!hasProducts && <h1>Products Coming Soon!</h1>}
-          <div className="all-products-layout">
-            {hasProducts && <ProductsList products={products} />}
-          </div>
+          <div>{hasProducts && <ProductsList products={products} />}</div>
         </main>
       );
     }
@@ -68,6 +70,7 @@ const mapDispatch = (dispatch) => {
   return {
     getProducts: () => dispatch(fetchProducts()),
     createOrder: () => dispatch(createOrder()),
+    getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
   };
 };
 

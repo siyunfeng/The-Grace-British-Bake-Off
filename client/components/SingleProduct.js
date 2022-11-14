@@ -2,48 +2,80 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProduct } from '../store/singleProduct';
-import { createOrder } from '../store';
+import { createOrder, addToCart, getOrder } from '../store';
 
 class SingleProduct extends React.Component {
   constructor() {
     super();
     this.state = {
       loading: true,
+      errorMessage: '',
+      quantityInput: 1,
     };
+    this.handleQuantityInput = this.handleQuantityInput.bind(this);
+    this.handleAddToCart = this.handleAddToCart.bind(this);
   }
 
-  // handleAddToCart(product) {
-  //   this.props.addToCart(this.props.order.id, product);
-  // }
+  handleQuantityInput(event) {
+    const purchaseInput = event.target.value;
+    this.setState({ quantityInput: purchaseInput });
+
+    // input validation
+    const { quantity } = this.props.product;
+
+    if (purchaseInput > quantity) {
+      this.setState({
+        errorMessage: `There are only ${quantity} item${
+          quantity > 1 ? 's' : ''
+        } in stock.`,
+      });
+    } else if (purchaseInput < 1) {
+      this.setState({ errorMessage: 'Please enter a valid quantity.' });
+    } else {
+      this.setState({ errorMessage: '' });
+    }
+  }
+
+  handleAddToCart(event, product) {
+    event.preventDefault();
+    const { errorMessage, quantityInput } = this.state;
+    const { addToCart, order } = this.props;
+    if (errorMessage.length === 0) {
+      addToCart(order.id, product, quantityInput);
+    }
+  }
 
   async componentDidMount() {
+    const { user, order, getProduct, createOrder, getExistingOrder } =
+      this.props;
     const { productId } = this.props.match.params;
-    await this.props.getProduct(productId);
+
+    await getProduct(productId);
     this.setState({ loading: false });
 
-    if (!this.props.user) {
-      // if that's a guest
-      console.log('This is a guest. Order ', this.props.order);
+    // if guest
+    if (!user) {
+      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
+      console.log('existingOrder >>>> ', existingOrder);
 
-      if (!this.props.order.id) {
-        await this.props.createOrder();
-        console.log('create order successfully! new order:', this.props.order);
+      if (!order.id && !existingOrder) {
+        await createOrder();
+        console.log('created order successfully! new order:', order);
       } else {
-        console.log('order id exists: ', this.props.order.id);
+        await getExistingOrder(existingOrder.id);
       }
     } else {
-      // if that's an auth user
       console.log('This is an auth user');
       // check if user already have existing order
-      // check order table where userId = this.props.user.id (fulfilled: false)
+      // check order table where userId = user.id (fulfilled: false)
       // if user have existing order : return order
     }
   }
 
   render() {
     const { product } = this.props;
-    const { loading } = this.state;
-    const { handleAddToCart } = this;
+    const { loading, errorMessage, quantityInput } = this.state;
+    const { handleAddToCart, handleQuantityInput } = this;
 
     return (
       <main>
@@ -64,23 +96,28 @@ class SingleProduct extends React.Component {
               </div>
               <div>Stock: {product.quantity}</div>
               {product.quantity ? (
-                <div className="purchase-container">
-                  <input
-                    className="purchase-option"
-                    type="number"
-                    id="purchase-amount"
-                    name="purchaseAmount"
-                    min="1"
-                    max={product.quantity}
-                  />
-                  <button
-                    className="purchase-option"
-                    id="add-to-cart-button"
-                    type="button"
-                    // onClick={handleAddToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
+                <div>
+                  <div className="purchase-container">
+                    <input
+                      className="purchase-option"
+                      type="number"
+                      id="purchase-amount"
+                      name="purchaseAmount"
+                      min="1"
+                      max={product.quantity}
+                      value={quantityInput}
+                      onChange={handleQuantityInput}
+                    />
+                    <button
+                      className="purchase-option"
+                      id="add-to-cart-button"
+                      type="button"
+                      onClick={(event) => handleAddToCart(event, product)}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                  {errorMessage.length > 0 && <p>{errorMessage}</p>}
                 </div>
               ) : (
                 <span>Out of Stock</span>
@@ -107,7 +144,9 @@ const mapDispatch = (dispatch) => {
   return {
     getProduct: (productId) => dispatch(fetchProduct(productId)),
     createOrder: () => dispatch(createOrder()),
-    // addToCart: (orderId, product) => dispatch(addToCart(orderId, product)),
+    addToCart: (orderId, product, quantityInput) =>
+      dispatch(addToCart(orderId, product, quantityInput)),
+    getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
   };
 };
 
