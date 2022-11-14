@@ -33,11 +33,31 @@ router.get('/:orderId', async (req, res, next) => {
 router.post('/:orderId', async (req, res, next) => {
   try {
     const { num_items, product } = req.body;
-    const newItemInCart = await Order_Product.create({ num_items });
-    await newItemInCart.setOrder(req.params.orderId);
-    await newItemInCart.setProduct(product.id);
-    await newItemInCart.setItemTotalPrice();
-    res.send(newItemInCart);
+
+    // check if product is already existing in the user's cart, then we update the product's num_items & items_total_price
+    const existingItem = await Order_Product.findOne({
+      where: { productId: product.id },
+      include: Product,
+    });
+    if (existingItem) {
+      const newQty = existingItem.num_items + parseInt(num_items);
+      await existingItem.update({ num_items: newQty });
+      await existingItem.setItemTotalPrice();
+
+      res.send(existingItem);
+    } else {
+      // else create this new item
+      const newItemInCart = await Order_Product.create({ num_items });
+      await newItemInCart.setOrder(req.params.orderId);
+      await newItemInCart.setProduct(product.id);
+      await newItemInCart.setItemTotalPrice();
+
+      const item = await Order_Product.findOne({
+        where: { productId: product.id },
+        include: Product,
+      });
+      res.send(item);
+    }
   } catch (error) {
     next(error);
   }

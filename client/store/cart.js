@@ -42,8 +42,12 @@ export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cart;
-    case ADD_ITEM:
-      return [...state, action.item];
+    case ADD_ITEM: {
+      const arr = state.filter(
+        (product) => product.productId !== action.item.productId
+      );
+      return arr.concat(action.item);
+    }
     default:
       return state;
   }
