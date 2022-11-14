@@ -1,14 +1,10 @@
 import React from 'react';
+import UserCard from './UserCard';
 
 const UsersList = (props) => (
-  <div>
+  <div className="all-users-layout">
     {props.users.map((user) => (
-      <div key={user.id} className="each-user-layout">
-        <div className="user-detail">
-          <p>Name: {user.username}</p>
-          <p>Email: {user.email || 'N/A'}</p>
-        </div>
-      </div>
+      <UserCard key={user.id} user={user} />
     ))}
   </div>
 );

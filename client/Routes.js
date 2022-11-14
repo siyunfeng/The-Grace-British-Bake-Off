@@ -9,6 +9,7 @@ import Cart from './components/Cart';
 import { me } from './store';
 import AdminPage from './components/AdminPage';
 import AllUsers from './components/AllUsers';
+import AdminAllProducts from './components/AdminAllProducts';
 
 /**
  * COMPONENT
@@ -34,7 +35,7 @@ class Routes extends Component {
           <Switch>
             <Route exact path="/manage" component={AdminPage} />
             <Route path="/manage/users" component={AllUsers} />
-            <Route path="/manage/products" component={AllProducts} />
+            <Route path="/manage/products" component={AdminAllProducts} />
             <Redirect to="/manage" />
           </Switch>
         ) : (
