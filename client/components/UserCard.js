@@ -15,14 +15,10 @@ const UserCard = (props) => {
           {user.userType === 'ADMIN' ? (
             <i
               className="em em-computer"
-              aria-role="presentation"
-              aria-label="PERSONAL COMPUTER"
             ></i>
           ) : (
             <i
               className="em em-yum"
-              aria-role="presentation"
-              aria-label="FACE SAVOURING DELICIOUS FOOD"
             ></i>
           )}
         </p>
