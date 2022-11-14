@@ -14,13 +14,13 @@ const UserCard = (props) => {
           Role: {user.userType || 'N/A'}{' '}
           {user.userType === 'ADMIN' ? (
             <i
-              class="em em-computer"
+              className="em em-computer"
               aria-role="presentation"
               aria-label="PERSONAL COMPUTER"
             ></i>
           ) : (
             <i
-              class="em em-yum"
+              className="em em-yum"
               aria-role="presentation"
               aria-label="FACE SAVOURING DELICIOUS FOOD"
             ></i>
