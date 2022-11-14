@@ -28,7 +28,7 @@ class Cart extends React.Component {
         </main>
       );
     } else {
-      const hasCart = cart.order_products.length !== 0;
+      const hasCart = cart.length !== 0;
       let cartPrice = 0;
 
       return (
@@ -36,7 +36,7 @@ class Cart extends React.Component {
           {hasCart ? (
             <div className="cart-layout">
               <div className="cart-products">
-                {cart.order_products.map((op) => {
+                {cart.map((op) => {
                   cartPrice += parseInt(op.item_total_price, 10);
 
                   return (
