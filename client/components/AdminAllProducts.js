@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../store';
 import AdminProductsList from './AdminProductsList';
+import { Link } from 'react-router-dom';
+import CreateOrUpdateProduct from './CreateOrUpdateProduct';
 
 export class AdminAllProducts extends React.Component {
   constructor() {
@@ -34,6 +36,9 @@ export class AdminAllProducts extends React.Component {
           {hasProducts ? (
             <div>
               <p>Total # of products: {products.length}</p>
+              <p>
+                <Link to="/manage/products/create">Add a new product</Link>
+              </p>
               <AdminProductsList products={products} />
             </div>
           ) : (
