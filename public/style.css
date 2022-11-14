@@ -25,9 +25,34 @@ nav a {
   font-size: 16pt;
 }
 
-form div {
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 2;
+  margin: 1em;
+}
+
+input {
+  padding: 0.3em;
+  margin: 0.5em 0;
+}
+
+/* form div {
   margin: 1em;
   display: inline-block;
+} */
+
+button {
+  padding: 1em 2em;
+  border: none;
+  font-size: 1em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* All products page */
@@ -89,4 +114,72 @@ form div {
   color: white;
   background-color: green;
   margin-left: 1.5em;
+}
+
+/* Admin all users page */
+.all-users-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 1em;
+  text-align: left;
+}
+
+.each-user-layout {
+  margin: 1em;
+  border: solid rgb(173, 167, 167);
+  border-radius: 20px;
+  flex-grow: 1; 
+  padding: 1em;
+  width: 250px;
+  height: 150px;
+}
+
+.user-header{
+}
+
+.user-detail {
+  font-size: small;
+}
+
+.user-name {
+  font-size: large;
+  text-align: center;
+}
+
+/* Admin all products page */
+.admin-all-products-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 1em;
+}
+
+.admin-product-img {
+  flex-grow: 1;
+  width: 290px;
+  border-radius: 20px;}
+
+.admin-each-product-layout {
+  margin: 1em;
+  border: solid rgb(173, 167, 167);
+  border-radius: 20px;
+  flex-grow: 1;
+  padding: 1em;
+  width: 300px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-product-detail {
+  padding: 1em;
+}
+
+.admin-product-delete-button{
+  background-color: red;
+}
+
+.admin-product-delete-button:hover {
+  background-color: #cc0000;
 }

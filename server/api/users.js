@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
       // explicitly select only the id and username fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'username', 'email'],
+      attributes: ['id', 'username', 'email', 'userType'],
     });
     res.json(users);
   } catch (err) {
@@ -31,7 +31,7 @@ router.get('/:userId', async (req, res, next) => {
         },
       },
       {
-        attributes: ['id', 'username', 'email'],
+        attributes: ['id', 'username', 'email', 'userType'],
       }
     );
     res.json(users);
@@ -61,10 +61,10 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 // PUT /api/users/:id
-router.get('/:id', async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);
-    rres.send(await user.update(req.body));
+    res.send(await user.update(req.body));
   } catch (error) {
     next(error);
   }
