@@ -41,6 +41,10 @@ class Routes extends Component {
               path="/manage/products/create"
               component={CreateOrUpdateProduct}
             />
+            <Route
+              path="/manage/products/:productId"
+              component={CreateOrUpdateProduct}
+            />
             <Redirect to="/manage" />
           </Switch>
         ) : (

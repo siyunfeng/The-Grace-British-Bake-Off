@@ -5,7 +5,7 @@ const SET_PRODUCT = 'SET_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 
 // action creators
-const _setProduct = (product) => ({ type: SET_PRODUCT, product });
+export const _setProduct = (product) => ({ type: SET_PRODUCT, product });
 const _updateProduct = (product) => ({ type: UPDATE_PRODUCT, product });
 
 // thunks

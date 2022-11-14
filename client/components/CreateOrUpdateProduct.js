@@ -1,5 +1,10 @@
 import React from 'react';
-import { fetchProduct, updateProduct, createProduct } from '../store';
+import {
+  fetchProduct,
+  updateProduct,
+  createProduct,
+  _setProduct,
+} from '../store';
 import { connect } from 'react-redux';
 import FormInput from './FormInput';
 
@@ -26,9 +31,12 @@ class CreateOrUpdateProduct extends React.Component {
   }
 
   componentDidUpdate(prev) {
-    if (prev.product !== this.props.product) {
-      this.setState(this.props.product);
+    if (prev.singleProduct !== this.props.singleProduct) {
+      this.setState(this.props.singleProduct);
     }
+  }
+  componentWillUnmount() {
+    this.props.clearProduct();
   }
 
   handleSubmit(evt) {
@@ -103,12 +111,13 @@ class CreateOrUpdateProduct extends React.Component {
   }
 }
 
-const mapState = ({ product }) => ({ product });
+const mapState = ({ singleProduct }) => ({ singleProduct });
 
 const mapDispatch = (dispatch) => ({
   loadProduct: (id) => dispatch(fetchProduct(id)),
   createProduct: (product) => dispatch(createProduct(product)),
   updateProduct: (product) => dispatch(updateProduct(product)),
+  clearProduct: () => dispatch(_setProduct({})),
 });
 
 export default connect(mapState, mapDispatch)(CreateOrUpdateProduct);
