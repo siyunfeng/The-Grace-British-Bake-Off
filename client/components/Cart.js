@@ -20,38 +20,33 @@ class Cart extends React.Component {
   render() {
     console.log('props in Cart component: ', this.props);
 
-    const { cart } = this.props;
+    const cart = this.props;
     const { loading } = this.state;
 
     return (
       <main>
         {loading && <p>Loading cart details...</p>}
-        {cart ? (
-          <div key={cart.id} className="cart-layout">
-            <div className="cart-info">
-              <div>Lauren's working on it!</div>
-              {/* {product.quantity ? (
-                <div className="purchase-container">
-                  <input
-                    className="purchase-option"
-                    type="number"
-                    id="purchase-amount"
-                    name="purchaseAmount"
-                    min="1"
-                    max={product.quantity}
-                  />
-                  <button
-                    className="purchase-option"
-                    id="add-to-cart-button"
-                    type="button"
-                  >
-                    Add to Cart
-                  </button>
+        {cart.order_products ? (
+          <div className="cart-layout">
+            {/* <div>Lauren's working on it!</div> */}
+            <div className="cart-products">
+              {cart.order_products.map((op) => (
+                <div key={op.product.id} className="cart-product-layout">
+                  <Link to={`/shop/products/${op.product.id}`}>
+                    <img
+                      className="all-products-img"
+                      src={op.product.imageUrl}
+                    />
+                  </Link>
+                  <div className="product-detail">
+                    <p>{op.product.name}</p>
+                    <p>Number of items: {op.num_items}</p>
+                    <p>Total price from this product: ${op.item_total_price}</p>
+                  </div>
                 </div>
-              ) : (
-                <span>Your cart is empty!</span>
-              )} */}
+              ))}
             </div>
+            <button className="checkout-button"></button>
           </div>
         ) : (
           <h1>Your cart is empty!!!!</h1>
