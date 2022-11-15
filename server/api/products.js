@@ -67,7 +67,7 @@ router.delete('/:id', requireToken, isAdmin, async (req, res, next) => {
 });
 
 // PUT /api/products/:id
-router.put('/:id', requireToken, isAdmin, async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id);
     res.send(await product.update(req.body));
