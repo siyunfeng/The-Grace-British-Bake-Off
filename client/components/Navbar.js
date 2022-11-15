@@ -6,7 +6,7 @@ import Cart from './Cart';
 
 const Navbar = ({ handleClick, isLoggedIn, userType, orderId }) => (
   <div>
-    <h1 id="shop-name">Grace Shopper</h1>
+    <h1 id="shop-name">Grace British Bake Off</h1>
     <nav>
       {isLoggedIn && userType == 'CUSTOMER' ? (
         <div>
