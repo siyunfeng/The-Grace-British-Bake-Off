@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const TOKEN = 'token';
+
 // Action Type:
 const SET_PRODUCTS = 'SET_PRODUCTS';
 const CREATE_PRODUCT = 'CREATE_PRODUCT';
@@ -26,8 +28,18 @@ export const fetchProducts = () => {
 export const createProduct = (product) => {
   return async (dispatch) => {
     try {
-      const { data: created } = await axios.post('/api/products', product);
-      dispatch(_createProduct(created));
+      const userToken = window.localStorage.getItem(TOKEN);
+      if (userToken) {
+        const { data: created } = await axios.post('/api/products', product, {
+          headers: {
+            authorization: userToken,
+          },
+        });
+        dispatch(_createProduct(created));
+      } else {
+        const { data: created } = await axios.post('/api/products', product);
+        dispatch(_createProduct(created));
+      }
     } catch (error) {
       console.error(error);
       throw error;
@@ -38,10 +50,23 @@ export const createProduct = (product) => {
 export const deleteProduct = (product) => {
   return async (dispatch) => {
     try {
-      const { data: deleted } = await axios.delete(
-        `/api/products/${product.id}`
-      );
-      dispatch(_deleteProduct(deleted));
+      const userToken = window.localStorage.getItem(TOKEN);
+      if (userToken) {
+        const { data: deleted } = await axios.delete(
+          `/api/products/${product.id}`,
+          {
+            headers: {
+              authorization: userToken,
+            },
+          }
+        );
+        dispatch(_deleteProduct(deleted));
+      } else {
+        const { data: deleted } = await axios.delete(
+          `/api/products/${product.id}`
+        );
+        dispatch(_deleteProduct(deleted));
+      }
     } catch (error) {
       console.error(error);
       throw error;

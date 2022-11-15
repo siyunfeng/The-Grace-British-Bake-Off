@@ -1,8 +1,30 @@
 const router = require('express').Router();
 const {
-  models: { Product },
+  models: { Product, User },
 } = require('../db');
 module.exports = router;
+
+// MIDDLEWARE FUNCTION TO CHECK FOR AUTH HEADERS and attach user to req
+const requireToken = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+
+    const user = await User.findByToken(token); //to make things super secure, we should encrypt the token and decrypt later :O
+
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const isAdmin = async (req, res, next) => {
+  // now check to see if req.user is an admin.
+  if (req.user.userType !== 'ADMIN') {
+    return next({ status: 401 });
+  }
+  next();
+};
 
 // GET /api/products
 router.get('/', async (req, res, next) => {
@@ -25,7 +47,7 @@ router.get('/:productId', async (req, res, next) => {
 });
 
 // POST /api/products
-router.post('/', async (req, res, next) => {
+router.post('/', requireToken, isAdmin, async (req, res, next) => {
   try {
     res.status(201).send(await Product.create(req.body));
   } catch (error) {
@@ -34,7 +56,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // DELETE /api/products/:id
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', requireToken, isAdmin, async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id);
     await product.destroy();
