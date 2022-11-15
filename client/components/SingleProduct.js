@@ -90,7 +90,7 @@ class SingleProduct extends React.Component {
                 <h1>{product.name}</h1>
               </div>
               <h2>${product.price}</h2>
-              <div>
+              <div className="product-description">
                 <h3>Product detail:</h3>
                 <p>{product.description}</p>
               </div>

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
  */
 export const AdminPage = (props) => {
   return (
-    <div>
+    <div className="admin-manage-page">
       <h3>Welcome, Admin</h3>
       <p>
         <Link to="/manage/users">Manage Users</Link>
@@ -15,6 +15,12 @@ export const AdminPage = (props) => {
       <p>
         <Link to="/manage/products">Manage Products</Link>
       </p>
+      <img
+        className="admin-welcome-img"
+        src={
+          'https://i.pinimg.com/564x/f1/91/c0/f191c02adb47d40e2a579977e66077b5.jpg'
+        }
+      />
     </div>
   );
 };

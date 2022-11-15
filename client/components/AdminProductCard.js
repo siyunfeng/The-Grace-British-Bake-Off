@@ -16,15 +16,17 @@ const AdminProductCard = (props) => {
         <p>Price: {product.price}</p>
         <p>Stock: {product.quantity}</p>
       </div>
-      <p>
-        <Link to={`/manage/products/${product.id}`}>Edit</Link>
-      </p>
-      <button
-        className="admin-product-delete-button"
-        onClick={() => handleDelete(product)}
-      >
-        Delete
-      </button>
+      <div>
+        <div>
+          <Link to={`/manage/products/${product.id}`}>Edit</Link>
+        </div>
+        <button
+          className="admin-product-delete-button"
+          onClick={() => handleDelete(product)}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };
