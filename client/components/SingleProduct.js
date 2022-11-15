@@ -61,27 +61,19 @@ class SingleProduct extends React.Component {
       if (!order.id && !existingOrder) {
         await createOrder(false);
         console.log('created order successfully! new order:', this.props.order);
+      } else if (!existingOrder) {
+        await createOrder();
+        console.log(
+          'fix bug -- create order successfully! new order:',
+          this.props.order
+        );
       } else {
         await getExistingOrder(existingOrder.id);
       }
     } else {
       console.log('This is an auth user');
 
-      // user may have shopped as a guest user  (so they will have order in localStorage) -- that order may not have any products
-      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
-      console.log('AUTH USER block: existingOrder >>>> ', existingOrder);
-
       await this.props.getOrderByUser();
-      // if (!order.id) {
-      //   // check if user already have existing order
-      //   console.log('here');
-      //   await this.props.getOrderByUser();
-      // } else {
-      //   await getExistingOrder(existingOrder.id);
-      // }
-
-      // check order table where userId = user.id (fulfilled: false)
-      // if user have existing order : return order
     }
   }
 

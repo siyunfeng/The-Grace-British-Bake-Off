@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchProducts, createOrder, getOrder } from '../store';
+import { fetchProducts, createOrder, getOrder, getOrderByUser } from '../store';
 import ProductsList from './ProductsList';
 
 export class AllProducts extends React.Component {
@@ -27,12 +27,20 @@ export class AllProducts extends React.Component {
       if (!order.id && !existingOrder) {
         await createOrder();
         console.log('create order successfully! new order:', this.props.order);
+      } else if (!existingOrder) {
+        await createOrder();
+        console.log(
+          'fix bug -- create order successfully! new order:',
+          this.props.order
+        );
       } else {
         await getExistingOrder(existingOrder.id);
       }
     } else {
       // if that's an auth user
       console.log('This is an auth user');
+
+      await this.props.getOrderByUser();
     }
   }
 
@@ -71,6 +79,7 @@ const mapDispatch = (dispatch) => {
     getProducts: () => dispatch(fetchProducts()),
     createOrder: () => dispatch(createOrder()),
     getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
+    getOrderByUser: () => dispatch(getOrderByUser()),
   };
 };
 

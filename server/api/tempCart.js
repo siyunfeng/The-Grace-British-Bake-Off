@@ -73,13 +73,44 @@ router.get('/:orderId', async (req, res, next) => {
 // PUT /api/order/:orderId
 router.put('/:orderId', requireToken, async (req, res, next) => {
   try {
-    const { setUser, localCartId, productId } = req.body;
+    const { setUser, localCartId, productId, consolidate } = req.body;
 
-    const updatedOrder = await Order.findByPk(req.params.orderId);
+    const existingOrder = await Order.findByPk(req.params.orderId);
 
     if (setUser) {
-      await updatedOrder.setUser(req.user.id);
+      //the existing order here represents the local storage order
+      // when user does not have any existing unfulfilled order, then continue using local storage order (assign user to that order)
+      await existingOrder.setUser(req.user.id);
+    } else if (consolidate) {
+      console.log('consolidate -- verify order ID: ', req.params.orderId);
+      console.log('consolidate -- localCartId: ', localCartId);
+      console.log('consolidate -- productId: ', productId);
+
+      const localCartItem = await Order_Product.findOne({
+        where: {
+          orderId: localCartId,
+          productId: productId,
+        },
+      });
+
+      const existingCartItem = await Order_Product.findOne({
+        where: {
+          orderId: req.params.orderId,
+          productId: productId,
+        },
+      });
+
+      // consolidate the local storage items with the existing items in order
+      const newQty = existingCartItem.num_items + localCartItem.num_items;
+      console.log('newQty: ', newQty);
+      await existingCartItem.update({ num_items: newQty });
+      await existingCartItem.setItemTotalPrice();
+
+      // updates are done, so delete the records related to the local storage order
+      await localCartItem.destroy();
     } else if (localCartId) {
+      // if consolidation is not required, just update the local storage item's order id to the existing order id
+
       console.log(
         'magic methods for Order_Product: ',
         Object.keys(Order_Product.prototype)
@@ -97,12 +128,12 @@ router.put('/:orderId', requireToken, async (req, res, next) => {
       });
 
       console.log('itemToUpdate: ', itemToUpdate);
+      const check = await itemToUpdate.setOrder(existingOrder);
 
-      const check = await itemToUpdate.setOrder(updatedOrder);
       console.log('check the updated item in Order_Product: ', check);
     }
 
-    res.send(updatedOrder);
+    res.send(existingOrder);
   } catch (error) {
     next(error);
   }

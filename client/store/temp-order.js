@@ -127,7 +127,7 @@ export const getOrderByUser = () => {
             dispatch(createOrder(true));
           }
         } else {
-          // else user already has an unfulfilled order in database
+          // else user ALREADY HAS an unfulfilled order in database
           console.log('user has an unfulfilled order in the database');
 
           // check local storage for any existing order / items in cart
@@ -135,8 +135,16 @@ export const getOrderByUser = () => {
             window.localStorage.getItem(ORDER)
           );
 
-          // if unfulfilled order id does not match the order id in local storage
-          if (data.id !== orderInLocalStorage.id) {
+          console.log('data.id ', data.id);
+          console.log('>>>> orderInLocalStorage ', orderInLocalStorage);
+
+          // there is no order in the local storage yet, use the order in database
+          if (!orderInLocalStorage) {
+            window.localStorage.setItem(ORDER, JSON.stringify(data));
+            dispatch(_setUserOrder(data));
+          } else if (data.id !== orderInLocalStorage.id) {
+            // if unfulfilled order id does not match the order id in local storage
+
             // get items (if any) in the local storage's order
             const { data: localCart } = await axios.get(
               `/api/cart/${orderInLocalStorage.id}`
@@ -175,8 +183,15 @@ export const getOrderByUser = () => {
             } else if (dbCart.length > 0 && localCart.length > 0) {
               // user has two carts of items, need to consolidate
 
-              // just do this for now so we have a working cart
-              localCart.forEach(async (item) => {
+              const newItems = localCart.filter((item) => {
+                return !dbCart.some(
+                  (dbCartItem) => item.productId === dbCartItem.productId
+                );
+              });
+              console.log('newItems: ', newItems);
+
+              // change the orderId on these newItems to the existing order's ID
+              newItems.forEach(async (item) => {
                 await axios.put(
                   `/api/tempCart/${data.id}`,
                   {
@@ -190,23 +205,42 @@ export const getOrderByUser = () => {
                   }
                 );
               });
-              // const finalCart =
-              // const newItems = localCart.filter(
-              //   (item) => !dbCart.includes(item)
-              // );
-              // console.log('newItems: ', newItems);
 
-              // const itemsToConsolidate = localCart.filter((item) =>
-              //   dbCart.includes(item)
-              // );
-              // console.log('items to consolidate: ', itemsToConsolidate);
+              const itemsToConsolidate = localCart.filter((item) => {
+                return dbCart.some(
+                  (dbCartItem) => item.productId === dbCartItem.productId
+                );
+              });
+              console.log('items to consolidate: ', itemsToConsolidate);
+
+              itemsToConsolidate.forEach(async (item) => {
+                await axios.put(
+                  `/api/tempCart/${data.id}`,
+                  {
+                    consolidate: true,
+                    localCartId: orderInLocalStorage.id,
+                    productId: item.productId,
+                  },
+                  {
+                    headers: {
+                      authorization: userToken,
+                    },
+                  }
+                );
+              });
 
               window.localStorage.setItem(ORDER, JSON.stringify(data));
               dispatch(_setUserOrder(data));
             }
           } else {
             // else set user's order to their unfulfilled order that is existing in database
-            console.log('continue using order');
+            console.log(
+              'continue using order -- db cart and local cart is same'
+            );
+            console.log('check data.id ', data.id);
+            console.log('check orderInLocalStorage ', orderInLocalStorage);
+
+            window.localStorage.setItem(ORDER, JSON.stringify(data));
             dispatch(_setUserOrder(data));
           }
         }
