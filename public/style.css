@@ -1,14 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Sono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sancreek&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kelly+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Life+Savers:wght@800&display=swap');
 
 body {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Special Elite', 'Oswald', 'Sono', sans-serif;
   text-align: center;
 }
 
 #shop-name {
-  font-family: 'Limelight', sans-serif;
+  font-family: 'Rye', 'Limelight', sans-serif;
   margin-top: 1.5em;
+  font-size: 30pt;
+  color: #B68D40;
 }
 
 a {
@@ -23,6 +31,7 @@ nav a {
   display: inline-block;
   margin: 1em;
   font-size: 16pt;
+  color: black;
 }
 
 form {
@@ -60,21 +69,33 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 1em;
+  margin: 2em;
 }
 
 .all-products-img {
-  width: 500px;
-  border-radius: 20px;
+  object-fit: cover;
+  height: 225px;
+  width: 300px;
+  border-radius: 30px;
+  margin-top: 1em;
 }
 
 .each-product-layout {
-  margin: 1.5em;
-  font-size: 14pt;
+  margin: 1em;
+  font-size: 11pt;
+  width: 350px;
+  border-radius: 30px;
+  box-shadow: 0 0.25em 0.75em rgba(0,0,0, .25);
+  transition: transform 300ms, box-shadow 300ms;
+}
+
+.each-product-layout:hover {
+  transform: scale(1.075);
+  box-shadow: 0 0.25em 2.5em rgba(0,0,0, .25);;
 }
 
 .product-detail {
-  padding: 1em;
+  color: black;
 }
 
 /* Single product page */
@@ -83,17 +104,25 @@ button {
   align-items: flex-start;
   justify-content: space-evenly;
   text-align: left;
+  flex-wrap: wrap;
   margin: 6em;
 }
 
 .single-product-img {
-  width: 800px;
+  object-fit: cover;
+  height: 375px;
+  width: 500px;
   border-radius: 20px;
+  box-shadow: 0 0.25em 0.75em rgba(0,0,0, .25);
+  transition: transform 300ms, box-shadow 300ms;
 }
 
 .product-info {
-  padding-left: 6em;
-  width: 50%;
+  width: 40%;
+}
+
+.product-description {
+  margin: 3em auto;
 }
 
 .purchase-container {
@@ -109,11 +138,27 @@ button {
 }
 
 #add-to-cart-button {
+  font-family: 'Special Elite', Courier, monospace;
+  font-size: 12pt;
   border-radius: 30px;
-  border-color: white;
-  color: white;
-  background-color: green;
+  background-color: rgb(194, 137, 84);
   margin-left: 1.5em;
+  box-shadow: 0 0.25em 0.75em rgba(0,0,0, .25);
+}
+
+/* User home page */
+.user-welcome-page {
+  font-family: 'Life Savers', sans-serif;
+  color: #104210;
+}
+
+/* Admin manage page */
+.admin-welcome-img {
+  object-fit: cover;
+  width: 400px;
+  height: 400px;
+  margin: 1em;
+  border-radius: 30px;
 }
 
 /* Admin all users page */
@@ -157,8 +202,12 @@ button {
 
 .admin-product-img {
   flex-grow: 1;
-  width: 290px;
-  border-radius: 20px;}
+  border-radius: 20px;
+  margin-top: 1em;
+  object-fit: cover;
+  height: 225px;
+  width: 300px;
+}
 
 .admin-each-product-layout {
   margin: 1em;
@@ -173,13 +222,16 @@ button {
 }
 
 .admin-product-detail {
-  padding: 1em;
+  padding: 0.25em;
 }
 
 .admin-product-delete-button{
   background-color: red;
+  font-family: 'Special Elite', Courier, monospace;
+  margin: 0.5em;
 }
 
 .admin-product-delete-button:hover {
   background-color: #cc0000;
+  color: white;
 }

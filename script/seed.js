@@ -3,6 +3,7 @@
 const {
   db,
   models: { User, Product, Order },
+  bakeryData,
 } = require('../server/db');
 
 const { faker } = require('@faker-js/faker');
@@ -60,6 +61,8 @@ async function seed() {
 
   // Products
   const productsArr = [];
+  /*
+  // Original faker product data by Allie
   Array.from({ length: 100 }).forEach((value, idx) => {
     productsArr.push(
       Product.create({
@@ -70,6 +73,20 @@ async function seed() {
       })
     );
   });
+  */
+
+  bakeryData.forEach((bakery) => {
+    productsArr.push(
+      Product.create({
+        name: bakery.name,
+        quantity: bakery.quantity,
+        price: bakery.price,
+        imageUrl: bakery.imageUrl,
+        description: bakery.description,
+      })
+    );
+  });
+
   const products = await Promise.all(productsArr);
 
   console.log(`seeded ${products.length} products`);
