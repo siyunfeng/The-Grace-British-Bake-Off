@@ -7,7 +7,7 @@ const ProductsList = (props) => (
       <div key={product.id} className="each-product-layout">
         <Link to={`/shop/products/${product.id}`}>
           <img className="all-products-img" src={product.imageUrl} />
-          <div className="product-detail">
+          <div className="each-product-detail">
             <p>{product.name}</p>
             <p>{product.price}</p>
           </div>

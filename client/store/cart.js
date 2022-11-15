@@ -4,9 +4,11 @@ import axios from 'axios';
 
 const SET_CART = 'SET_CART';
 const ADD_ITEM = 'ADD_ITEM';
+const REMOVE_ITEM = 'REMOVE_ITEM';
 
 const _setCart = (cart) => ({ type: SET_CART, cart });
 const _addItem = (item) => ({ type: ADD_ITEM, item });
+const _removeItem = (removedItem) => ({ type: REMOVE_ITEM, removedItem });
 
 export const fetchCart = (orderId) => {
   return async (dispatch) => {
@@ -36,19 +38,34 @@ export const addToCart = (orderId, product, quantityInput) => {
   };
 };
 
-// const initialState = {};  // Lauren's original code
+export const removeItem = (item) => {
+  return async (dispatch) => {
+    try {
+      const { data: removedItem } = await axios.delete(
+        `/api/cart/${item.orderId}`,
+        { data: { item } }
+      );
+      dispatch(_removeItem(removedItem));
+    } catch (error) {
+      console.log('store/cart/:orderId removeItem ERROR: ', error);
+      throw error;
+    }
+  };
+};
+
 const initialState = [];
 
 export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cart;
-    case ADD_ITEM: {
+    case ADD_ITEM:
       const arr = state.filter(
         (product) => product.productId !== action.item.productId
       );
       return arr.concat(action.item);
-    }
+    case REMOVE_ITEM:
+      return state.filter((product) => product.id !== action.removedItem.id);
     default:
       return state;
   }
