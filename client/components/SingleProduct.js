@@ -68,7 +68,7 @@ class SingleProduct extends React.Component {
           this.props.order
         );
       } else {
-        await getExistingOrder(existingOrder.id);
+        await getExistingOrder(existingOrder.id); // existingOrder can be null, need to cover that scenario
       }
     } else {
       console.log('This is an auth user');
@@ -90,12 +90,12 @@ class SingleProduct extends React.Component {
             <div>
               <img className="single-product-img" src={product.imageUrl} />
             </div>
-            <div className="product-info">
+            <div className="single-product-info">
               <div>
                 <h1>{product.name}</h1>
               </div>
               <h2>${product.price}</h2>
-              <div className="product-description">
+              <div className="single-product-description">
                 <h3>Product detail:</h3>
                 <p>{product.description}</p>
               </div>
