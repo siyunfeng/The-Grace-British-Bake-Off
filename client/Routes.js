@@ -11,6 +11,8 @@ import AdminPage from './components/AdminPage';
 import AllUsers from './components/AllUsers';
 import AdminAllProducts from './components/AdminAllProducts';
 import CreateOrUpdateProduct from './components/CreateOrUpdateProduct';
+import CheckoutPage from './components/CheckoutPage';
+import ConfirmationPage from './components/ConfirmationPage';
 
 /**
  * COMPONENT
@@ -26,10 +28,12 @@ class Routes extends Component {
       <div>
         {isLoggedIn && userType === 'CUSTOMER' ? (
           <Switch>
-            <Route path="/home" exact component={Home} />
+            <Route exact path="/home" component={Home} />
             <Route exact path="/shop" component={AllProducts} />
             <Route path="/shop/products/:productId" component={SingleProduct} />
             <Route exact path="/cart/:orderId" component={Cart} />
+            <Route exact path="/checkout" component={CheckoutPage} />
+            <Route path="/checkout/confirmation" component={ConfirmationPage} />
             <Redirect to="/home" />
           </Switch>
         ) : isLoggedIn && userType === 'ADMIN' ? (
@@ -49,12 +53,14 @@ class Routes extends Component {
           </Switch>
         ) : (
           <Switch>
-            <Route path="/" exact component={AllProducts} />
+            <Route exact path="/" component={AllProducts} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route exact path="/shop" component={AllProducts} />
             <Route path="/shop/products/:productId" component={SingleProduct} />
             <Route exact path="/cart/:orderId" component={Cart} />
+            <Route exact path="/checkout" component={CheckoutPage} />
+            <Route path="/checkout/confirmation" component={ConfirmationPage} />
           </Switch>
         )}
       </div>

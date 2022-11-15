@@ -7,6 +7,7 @@ import {
 } from '../store';
 import { connect } from 'react-redux';
 import FormInput from './FormInput';
+import { Link } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -106,6 +107,7 @@ class CreateOrUpdateProduct extends React.Component {
         ) : (
           <button type="submit">Add Product</button>
         )}
+        <Link to="/manage/products">Go back</Link>
       </form>
     );
   }

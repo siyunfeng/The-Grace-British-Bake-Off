@@ -85,7 +85,7 @@ class Cart extends React.Component {
               <h2>Shopping Cart</h2>
               <div className="cart-products-layout">
                 {cart.map((op) => {
-                  cartPrice += parseInt(op.item_total_price, 10);
+                  cartPrice += parseFloat(op.item_total_price);
 
                   return (
                     <div key={op.product.id} className="cart-main">
@@ -101,7 +101,6 @@ class Cart extends React.Component {
 
                         <div className="cart-product-detail">
                           <h3>{op.product.name}</h3>
-                          <p>${op.product.price}</p>
                           <button
                             className="remove-button"
                             type="button"
@@ -111,6 +110,7 @@ class Cart extends React.Component {
                           </button>
                         </div>
                         <div className="cart-quantity-option">
+                          <p>Unit Price: ${op.product.price}</p>
                           <p>
                             Quantity: {op.num_items}
                             <input type="number" name="" />
@@ -125,8 +125,10 @@ class Cart extends React.Component {
                   <h2>Order Summary - {cart.length} Item(s)</h2>
                   <h2>Order Total: ${cartPrice}</h2>
                 </div>
-                <button className="checkout-button">CHECKOUT</button>
               </div>
+              <Link to="/checkout">
+                <button className="checkout-button">CHECKOUT</button>
+              </Link>
             </div>
           ) : (
             <h3>Your cart is empty.</h3>

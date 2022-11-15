@@ -82,3 +82,13 @@ router.delete('/:orderId', async (req, res, next) => {
     next(error);
   }
 });
+
+// PUT /api/cart/:orderId
+router.put('/:orderId', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.orderId);
+    res.send(await order.update(req.body));
+  } catch (err) {
+    next(err);
+  }
+});

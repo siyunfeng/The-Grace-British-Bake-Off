@@ -5,10 +5,12 @@ const ORDER = 'order';
 
 const CREATE_ORDER = 'CREATE_ORDER';
 const GET_ORDER = 'GET_ORDER';
+const FULFILL_ORDER = 'FULFILL_ORDER';
 const SET_USER_ORDER = 'SET_USER_ORDER';
 
 const _createOrder = (order) => ({ type: CREATE_ORDER, order });
 const _getOrder = (order) => ({ type: GET_ORDER, order });
+const _fulfillOrder = (order) => ({ type: FULFILL_ORDER, order });
 const _setUserOrder = (order) => ({ type: SET_USER_ORDER, order });
 
 // createOrder()
@@ -56,13 +58,28 @@ export const getOrder = (orderId) => {
   return async (dispatch) => {
     try {
       // NOTE: need to change tempCart to order later
-      console.log('Here is temp-order getOrder()');
+      // console.log('Here is temp-order getOrder()');
       const { data: order } = await axios.get(`/api/tempCart/${orderId}`);
-      console.log('getOrder thunk: order =', order);
+      // console.log('getOrder thunk: order =', order);
       dispatch(_getOrder(order));
     } catch (error) {
       console.log('store/temp-order getOrder ERROR: ', error);
       throw error;
+    }
+  };
+};
+
+export const fullfillOrder = (order) => {
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(`/api/cart/${order.id}`, {
+        ...order,
+        fulfilled: true,
+      });
+      window.localStorage.clear();
+      dispatch(_fulfillOrder(updated));
+    } catch (error) {
+      console.log('store/temp-order fullfillOrder ERROR', error);
     }
   };
 };
@@ -259,6 +276,8 @@ export default function tempOrderReducer(state = initialState, action) {
     case CREATE_ORDER:
       return action.order;
     case GET_ORDER:
+      return action.order;
+    case FULFILL_ORDER:
       return action.order;
     case SET_USER_ORDER:
       return action.order;
