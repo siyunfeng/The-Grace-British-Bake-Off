@@ -13,7 +13,11 @@ class Cart extends React.Component {
 
   async componentDidMount() {
     const { orderId } = this.props.match.params;
-    await this.props.getCart(orderId);
+    if (orderId) {
+      await this.props.getCart(orderId);
+    } else {
+      console.error('undefined order Id');
+    }
     this.setState({ loading: false });
   }
 
@@ -37,7 +41,7 @@ class Cart extends React.Component {
             <div className="cart-layout">
               <div className="cart-products">
                 {cart.map((op) => {
-                  cartPrice += parseInt(op.item_total_price, 10);
+                  cartPrice += parseFloat(op.item_total_price);
 
                   return (
                     <div key={op.product.id} className="cart-product-layout">
@@ -50,6 +54,7 @@ class Cart extends React.Component {
                       <div className="product-detail">
                         <p>{op.product.name}</p>
                         <p>Number of items: {op.num_items}</p>
+                        <p>Unit Price: ${op.product.price}</p>
                         <p>
                           Total price from this product: ${op.item_total_price}
                         </p>
@@ -59,7 +64,9 @@ class Cart extends React.Component {
                 })}
               </div>
               <p>Your checkout total is: ${cartPrice}</p>
-              <button className="checkout-button">CHECKOUT</button>
+              <Link to="/checkout">
+                <button className="checkout-button">CHECKOUT</button>
+              </Link>
             </div>
           ) : (
             <h1>Your cart is empty.</h1>
