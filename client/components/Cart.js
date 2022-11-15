@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchCart, removeItem } from '../store/cart';
+import { createOrder, getOrder, getOrderByUser } from '../store';
 
 class Cart extends React.Component {
   constructor() {
@@ -18,9 +19,48 @@ class Cart extends React.Component {
   }
 
   async componentDidMount() {
+    const { user, order, getCart, createOrder, getExistingOrder } = this.props;
+
     const { orderId } = this.props.match.params;
-    await this.props.getCart(orderId);
-    this.setState({ loading: false });
+    // await getCart(orderId);
+    // this.setState({ loading: false });
+
+    // if there is a valid orderId, load cart
+    // if (orderId) {
+    //   await getCart(orderId);
+    //   this.setState({ loading: false });
+    // } else
+    if (!user) {
+      // need to determine the orderId
+
+      // if it is a guest user
+      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
+      console.log('existingOrder >>>> ', existingOrder);
+
+      if (!order.id && !existingOrder) {
+        await createOrder(false);
+        console.log('created order successfully! new order:', this.props.order);
+
+        await getCart(this.props.order.id);
+        this.setState({ loading: false });
+      } else if (!existingOrder) {
+        await createOrder();
+        console.log(
+          'fix bug -- create order successfully! new order:',
+          this.props.order
+        );
+      } else {
+        await getExistingOrder(existingOrder.id);
+        await getCart(this.props.order.id);
+        this.setState({ loading: false });
+      }
+    } else {
+      console.log('This is an auth user');
+      // this is an authorized user, dispatch thunk to get order
+      await this.props.getOrderByUser();
+      await getCart(this.props.order.id);
+      this.setState({ loading: false });
+    }
   }
 
   render() {
@@ -99,6 +139,8 @@ class Cart extends React.Component {
 
 const mapState = (state) => {
   return {
+    user: state.auth.username,
+    order: state.order,
     cart: state.cart,
   };
 };
@@ -107,6 +149,9 @@ const mapDispatch = (dispatch) => {
   return {
     getCart: (orderId) => dispatch(fetchCart(orderId)),
     removeItem: (item) => dispatch(removeItem(item)),
+    createOrder: (setUserId) => dispatch(createOrder(setUserId)),
+    getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
+    getOrderByUser: () => dispatch(getOrderByUser()),
   };
 };
 
