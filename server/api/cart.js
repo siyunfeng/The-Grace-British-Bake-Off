@@ -18,6 +18,7 @@ router.get('/:orderId', async (req, res, next) => {
 });
 */
 
+// GET /cart/:orderId
 router.get('/:orderId', async (req, res, next) => {
   try {
     const cartOrder = await Order_Product.findAll({
@@ -30,6 +31,7 @@ router.get('/:orderId', async (req, res, next) => {
   }
 });
 
+// POST /cart/:orderId
 router.post('/:orderId', async (req, res, next) => {
   try {
     const { num_items, product } = req.body;
@@ -66,5 +68,27 @@ router.post('/:orderId', async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+});
+
+// DELETE /cart/orderId
+router.delete('/:orderId', async (req, res, next) => {
+  try {
+    const { item } = req.body;
+    const removedItem = await Order_Product.findByPk(item.id);
+    await removedItem.destroy();
+    res.send(removedItem);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT /api/cart/:orderId
+router.put('/:orderId', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.orderId);
+    res.send(await order.update(req.body));
+  } catch (err) {
+    next(err);
   }
 });

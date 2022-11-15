@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchCart } from '../store/cart';
+import { fetchCart, removeItem } from '../store/cart';
+import { createOrder, getOrder, getOrderByUser } from '../store';
 
 class Cart extends React.Component {
   constructor() {
@@ -9,21 +10,63 @@ class Cart extends React.Component {
     this.state = {
       loading: true,
     };
+    this.handleRemove = this.handleRemove.bind(this);
+  }
+
+  handleRemove(item) {
+    const { removeItem } = this.props;
+    removeItem(item);
   }
 
   async componentDidMount() {
+    const { user, order, getCart, createOrder, getExistingOrder } = this.props;
+
     const { orderId } = this.props.match.params;
-    if (orderId) {
-      await this.props.getCart(orderId);
+    // await getCart(orderId);
+    // this.setState({ loading: false });
+
+    // if there is a valid orderId, load cart
+    // if (orderId) {
+    //   await getCart(orderId);
+    //   this.setState({ loading: false });
+    // } else
+    if (!user) {
+      // need to determine the orderId
+
+      // if it is a guest user
+      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
+      console.log('existingOrder >>>> ', existingOrder);
+
+      if (!order.id && !existingOrder) {
+        await createOrder(false);
+        console.log('created order successfully! new order:', this.props.order);
+
+        await getCart(this.props.order.id);
+        this.setState({ loading: false });
+      } else if (!existingOrder) {
+        await createOrder();
+        console.log(
+          'fix bug -- create order successfully! new order:',
+          this.props.order
+        );
+      } else {
+        await getExistingOrder(existingOrder.id);
+        await getCart(this.props.order.id);
+        this.setState({ loading: false });
+      }
     } else {
-      console.error('undefined order Id');
+      console.log('This is an auth user');
+      // this is an authorized user, dispatch thunk to get order
+      await this.props.getOrderByUser();
+      await getCart(this.props.order.id);
+      this.setState({ loading: false });
     }
-    this.setState({ loading: false });
   }
 
   render() {
     const { cart } = this.props;
     const { loading } = this.state;
+    const { handleRemove } = this;
 
     if (loading) {
       return (
@@ -39,37 +82,56 @@ class Cart extends React.Component {
         <main>
           {hasCart ? (
             <div className="cart-layout">
-              <div className="cart-products">
+              <h2>Shopping Cart</h2>
+              <div className="cart-products-layout">
                 {cart.map((op) => {
                   cartPrice += parseFloat(op.item_total_price);
 
                   return (
-                    <div key={op.product.id} className="cart-product-layout">
-                      <Link to={`/shop/products/${op.product.id}`}>
-                        <img
-                          className="all-products-img"
-                          src={op.product.imageUrl}
-                        />
-                      </Link>
-                      <div className="product-detail">
-                        <p>{op.product.name}</p>
-                        <p>Number of items: {op.num_items}</p>
-                        <p>Unit Price: ${op.product.price}</p>
-                        <p>
-                          Total price from this product: ${op.item_total_price}
-                        </p>
+                    <div key={op.product.id} className="cart-main">
+                      <div className="cart-each-product">
+                        <div>
+                          <Link to={`/shop/products/${op.product.id}`}>
+                            <img
+                              className="all-products-img"
+                              src={op.product.imageUrl}
+                            />
+                          </Link>
+                        </div>
+
+                        <div className="cart-product-detail">
+                          <h3>{op.product.name}</h3>
+                          <button
+                            className="remove-button"
+                            type="button"
+                            onClick={() => handleRemove(op)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <div className="cart-quantity-option">
+                          <p>Unit Price: ${op.product.price}</p>
+                          <p>
+                            Quantity: {op.num_items}
+                            <input type="number" name="" />
+                          </p>
+                          <p>Product Subtotal: ${op.item_total_price}</p>
+                        </div>
                       </div>
                     </div>
                   );
                 })}
+                <div className="cart-each-product order-summary">
+                  <h2>Order Summary - {cart.length} Item(s)</h2>
+                  <h2>Order Total: ${cartPrice}</h2>
+                </div>
               </div>
-              <p>Your checkout total is: ${cartPrice}</p>
               <Link to="/checkout">
                 <button className="checkout-button">CHECKOUT</button>
               </Link>
             </div>
           ) : (
-            <h1>Your cart is empty.</h1>
+            <h3>Your cart is empty.</h3>
           )}
         </main>
       );
@@ -79,6 +141,8 @@ class Cart extends React.Component {
 
 const mapState = (state) => {
   return {
+    user: state.auth.username,
+    order: state.order,
     cart: state.cart,
   };
 };
@@ -86,6 +150,10 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getCart: (orderId) => dispatch(fetchCart(orderId)),
+    removeItem: (item) => dispatch(removeItem(item)),
+    createOrder: (setUserId) => dispatch(createOrder(setUserId)),
+    getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
+    getOrderByUser: () => dispatch(getOrderByUser()),
   };
 };
 

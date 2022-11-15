@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProduct } from '../store/singleProduct';
-import { createOrder, addToCart, getOrder } from '../store';
+import { createOrder, addToCart, getOrder, getOrderByUser } from '../store';
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -59,16 +59,21 @@ class SingleProduct extends React.Component {
       console.log('existingOrder >>>> ', existingOrder);
 
       if (!order.id && !existingOrder) {
-        await createOrder();
+        await createOrder(false);
         console.log('created order successfully! new order:', this.props.order);
+      } else if (!existingOrder) {
+        await createOrder();
+        console.log(
+          'fix bug -- create order successfully! new order:',
+          this.props.order
+        );
       } else {
-        await getExistingOrder(existingOrder.id);
+        await getExistingOrder(existingOrder.id); // existingOrder can be null, need to cover that scenario
       }
     } else {
       console.log('This is an auth user');
-      // check if user already have existing order
-      // check order table where userId = user.id (fulfilled: false)
-      // if user have existing order : return order
+
+      await this.props.getOrderByUser();
     }
   }
 
@@ -85,12 +90,12 @@ class SingleProduct extends React.Component {
             <div>
               <img className="single-product-img" src={product.imageUrl} />
             </div>
-            <div className="product-info">
+            <div className="single-product-info">
               <div>
                 <h1>{product.name}</h1>
               </div>
               <h2>${product.price}</h2>
-              <div className="product-description">
+              <div className="single-product-description">
                 <h3>Product detail:</h3>
                 <p>{product.description}</p>
               </div>
@@ -143,10 +148,11 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getProduct: (productId) => dispatch(fetchProduct(productId)),
-    createOrder: () => dispatch(createOrder()),
+    createOrder: (setUserId) => dispatch(createOrder(setUserId)),
     addToCart: (orderId, product, quantityInput) =>
       dispatch(addToCart(orderId, product, quantityInput)),
     getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
+    getOrderByUser: () => dispatch(getOrderByUser()),
   };
 };
 
