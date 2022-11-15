@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProduct } from '../store/singleProduct';
-import { createOrder, addToCart, getOrder } from '../store';
+import { createOrder, addToCart, getOrder, getOrderByUser } from '../store';
 
 class SingleProduct extends React.Component {
   constructor() {
@@ -59,14 +59,27 @@ class SingleProduct extends React.Component {
       console.log('existingOrder >>>> ', existingOrder);
 
       if (!order.id && !existingOrder) {
-        await createOrder();
+        await createOrder(false);
         console.log('created order successfully! new order:', this.props.order);
       } else {
         await getExistingOrder(existingOrder.id);
       }
     } else {
       console.log('This is an auth user');
-      // check if user already have existing order
+
+      // user may have shopped as a guest user  (so they will have order in localStorage) -- that order may not have any products
+      const existingOrder = JSON.parse(window.localStorage.getItem('order'));
+      console.log('AUTH USER block: existingOrder >>>> ', existingOrder);
+
+      await this.props.getOrderByUser();
+      // if (!order.id) {
+      //   // check if user already have existing order
+      //   console.log('here');
+      //   await this.props.getOrderByUser();
+      // } else {
+      //   await getExistingOrder(existingOrder.id);
+      // }
+
       // check order table where userId = user.id (fulfilled: false)
       // if user have existing order : return order
     }
@@ -143,10 +156,11 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getProduct: (productId) => dispatch(fetchProduct(productId)),
-    createOrder: () => dispatch(createOrder()),
+    createOrder: (setUserId) => dispatch(createOrder(setUserId)),
     addToCart: (orderId, product, quantityInput) =>
       dispatch(addToCart(orderId, product, quantityInput)),
     getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
+    getOrderByUser: () => dispatch(getOrderByUser()),
   };
 };
 

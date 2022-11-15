@@ -26,7 +26,7 @@ export class AllProducts extends React.Component {
 
       if (!order.id && !existingOrder) {
         await createOrder();
-        console.log('create order successfully! new order:', order);
+        console.log('create order successfully! new order:', this.props.order);
       } else {
         await getExistingOrder(existingOrder.id);
       }

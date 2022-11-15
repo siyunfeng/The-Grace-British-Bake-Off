@@ -36,7 +36,6 @@ export const addToCart = (orderId, product, quantityInput) => {
   };
 };
 
-// const initialState = {};  // Lauren's original code
 const initialState = [];
 
 export default function cartReducer(state = initialState, action) {
