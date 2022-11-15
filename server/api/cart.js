@@ -36,7 +36,10 @@ router.post('/:orderId', async (req, res, next) => {
 
     // check if product is already existing in the user's cart, then we update the product's num_items & items_total_price
     const existingItem = await Order_Product.findOne({
-      where: { productId: product.id },
+      where: {
+        orderId: req.params.orderId,
+        productId: product.id,
+      },
       include: Product,
     });
     if (existingItem) {
@@ -53,7 +56,10 @@ router.post('/:orderId', async (req, res, next) => {
       await newItemInCart.setItemTotalPrice();
 
       const item = await Order_Product.findOne({
-        where: { productId: product.id },
+        where: {
+          orderId: req.params.orderId,
+          productId: product.id,
+        },
         include: Product,
       });
       res.send(item);

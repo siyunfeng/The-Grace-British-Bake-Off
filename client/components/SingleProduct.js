@@ -36,12 +36,12 @@ class SingleProduct extends React.Component {
     }
   }
 
-  handleAddToCart(event, product) {
+  async handleAddToCart(event, product) {
     event.preventDefault();
     const { errorMessage, quantityInput } = this.state;
-    const { addToCart, order } = this.props;
+    const { addToCart } = this.props;
     if (errorMessage.length === 0) {
-      addToCart(order.id, product, quantityInput);
+      await addToCart(this.props.order.id, product, quantityInput);
     }
   }
 
@@ -60,7 +60,7 @@ class SingleProduct extends React.Component {
 
       if (!order.id && !existingOrder) {
         await createOrder();
-        console.log('created order successfully! new order:', order);
+        console.log('created order successfully! new order:', this.props.order);
       } else {
         await getExistingOrder(existingOrder.id);
       }
