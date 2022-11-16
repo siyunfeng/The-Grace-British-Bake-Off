@@ -278,7 +278,7 @@ export default function tempOrderReducer(state = initialState, action) {
     case GET_ORDER:
       return action.order;
     case FULFILL_ORDER:
-      return action.order;
+      return {};
     case SET_USER_ORDER:
       return action.order;
     default:

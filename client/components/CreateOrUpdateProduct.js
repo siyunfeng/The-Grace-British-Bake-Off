@@ -93,22 +93,24 @@ class CreateOrUpdateProduct extends React.Component {
       },
     ];
     return (
-      <form onSubmit={this.handleSubmit}>
-        {inputs.map((input) => (
-          <FormInput
-            key={input.id}
-            {...input}
-            value={this.state[input.name] ? this.state[input.name] : ''}
-            onChange={this.handleChange}
-          />
-        ))}
-        {this.props.match.params.productId ? (
-          <button type="submit">Save Changes</button>
-        ) : (
-          <button type="submit">Add Product</button>
-        )}
-        <Link to="/manage/products">Go back</Link>
-      </form>
+      <div className="form-styling">
+        <form onSubmit={this.handleSubmit}>
+          {inputs.map((input) => (
+            <FormInput
+              key={input.id}
+              {...input}
+              value={this.state[input.name] ? this.state[input.name] : ''}
+              onChange={this.handleChange}
+            />
+          ))}
+          {this.props.match.params.productId ? (
+            <button type="submit">Save Changes</button>
+          ) : (
+            <button type="submit">Add Product</button>
+          )}
+          <Link to="/manage/products">Go back</Link>
+        </form>
+      </div>
     );
   }
 }
