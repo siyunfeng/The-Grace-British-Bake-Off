@@ -126,6 +126,12 @@ form {
   margin-top: 22px;
 }
 
+#confirmation {
+  color: #b68d40;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+
 input {
   padding: 0.3em;
   margin: 0.5em 0;
