@@ -10,7 +10,7 @@ const UPDATE_QTY = 'UPDATE_QTY';
 const _setCart = (cart) => ({ type: SET_CART, cart });
 const _addItem = (item) => ({ type: ADD_ITEM, item });
 const _removeItem = (removedItem) => ({ type: REMOVE_ITEM, removedItem });
-const _updateQty = () => ({ type: UPDATE_QTY });
+const _updateQty = (item) => ({ type: UPDATE_QTY, item });
 
 export const fetchCart = (orderId) => {
   return async (dispatch) => {
@@ -55,10 +55,16 @@ export const removeItem = (item) => {
   };
 };
 
-export const updateQty = () => {
+export const updateQty = (newQty, item) => {
   return async (dispatch) => {
     try {
-      const { data: newQty } = await axios.put(`/`);
+      console.log('LINE 61 newQty =', newQty, 'item =', item);
+      const { data: updatedItem } = await axios.put(
+        `/api/cart/${item.orderId}`,
+        { newQty, item }
+      );
+      console.log('updateQty -- updatedItem =', updatedItem);
+      dispatch(_updateQty(updatedItem));
     } catch (error) {
       console.log('store/cart/:orderId updateQty ERROR: ', error);
       throw error;
@@ -79,6 +85,11 @@ export default function cartReducer(state = initialState, action) {
       return arr.concat(action.item);
     case REMOVE_ITEM:
       return state.filter((product) => product.id !== action.removedItem.id);
+    case UPDATE_QTY:
+      const originArr = state.filter(
+        (item) => item.productId !== action.item.productId
+      );
+      return originArr.concat(action.item);
     default:
       return state;
   }

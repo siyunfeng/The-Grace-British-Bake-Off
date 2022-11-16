@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchCart, removeItem } from '../store/cart';
+import { fetchCart, removeItem, updateQty } from '../store/cart';
 import { createOrder, getOrder, getOrderByUser } from '../store';
 
 class Cart extends React.Component {
@@ -9,7 +9,7 @@ class Cart extends React.Component {
     super();
     this.state = {
       loading: true,
-      newQuantity: '',
+      qtyInputs: {},
     };
     this.handleRemove = this.handleRemove.bind(this);
     this.handleQtyUpdate = this.handleQtyUpdate.bind(this);
@@ -20,12 +20,14 @@ class Cart extends React.Component {
     removeItem(item);
   }
 
-  handleQtyUpdate(event) {
-    this.setState({ newQuantity: event.target.value });
-  }
-
-  handleUpdate() {
-    return true;
+  handleQtyUpdate(event, item, index) {
+    const newQty = event.target.value;
+    this.setState((state) => {
+      const newObject = { ...state.qtyInputs };
+      newObject[`${index}`] = newQty;
+      return { qtyInputs: newObject };
+    });
+    this.props.updateQty(newQty, item);
   }
 
   async componentDidMount() {
@@ -75,9 +77,9 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    const { loading, newQuantity } = this.state;
-    const { handleRemove, handleQtyUpdate, handleUpdate } = this;
-    console.log('newQuantity =', newQuantity);
+    const { loading, qtyInputs } = this.state;
+    const { handleRemove, handleQtyUpdate } = this;
+
     if (loading) {
       return (
         <main>
@@ -94,7 +96,7 @@ class Cart extends React.Component {
             <div className="cart-layout">
               <h2>Shopping Cart</h2>
               <div className="cart-products-layout">
-                {cart.map((op) => {
+                {cart.map((op, index) => {
                   cartPrice += parseFloat(op.item_total_price);
 
                   return (
@@ -128,16 +130,18 @@ class Cart extends React.Component {
                               name="cart-quantity-input"
                               min="1"
                               max={op.product.quantity}
-                              placeholder={op.num_items}
-                              value={newQuantity}
-                              onChange={(event) => handleQtyUpdate(event)}
+                              placeholder="Update item here..."
+                              value={qtyInputs[`${index}`] || ''}
+                              onChange={(event) =>
+                                handleQtyUpdate(event, op, index)
+                              }
                             />
-                            <button
+                            {/* <button
                               type="button"
                               onClick={() => handleUpdate(op)}
                             >
                               Update
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       </div>
@@ -177,6 +181,7 @@ const mapDispatch = (dispatch) => {
     createOrder: (setUserId) => dispatch(createOrder(setUserId)),
     getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
     getOrderByUser: () => dispatch(getOrderByUser()),
+    updateQty: (newQty, item) => dispatch(updateQty(newQty, item)),
   };
 };
 
