@@ -27,7 +27,7 @@ export const fetchCart = (orderId) => {
 export const addToCart = (orderId, product, quantityInput) => {
   return async (dispatch) => {
     try {
-      console.log('Add to cart thunk -- orderId: ', orderId);
+      // console.log('Add to cart thunk -- orderId: ', orderId);
       const { data: item } = await axios.post(`/api/cart/${orderId}`, {
         num_items: quantityInput,
         product,
@@ -55,16 +55,15 @@ export const removeItem = (item) => {
   };
 };
 
-export const updateQty = (newQty, item) => {
+export const updateQty = (newQty, item, history) => {
   return async (dispatch) => {
     try {
-      console.log('LINE 61 newQty =', newQty, 'item =', item);
       const { data: updatedItem } = await axios.put(
         `/api/cart/${item.orderId}`,
         { newQty, item }
       );
-      console.log('updateQty -- updatedItem =', updatedItem);
       dispatch(_updateQty(updatedItem));
+      history.push(`/cart/${updatedItem.orderId}`);
     } catch (error) {
       console.log('store/cart/:orderId updateQty ERROR: ', error);
       throw error;
@@ -86,10 +85,9 @@ export default function cartReducer(state = initialState, action) {
     case REMOVE_ITEM:
       return state.filter((product) => product.id !== action.removedItem.id);
     case UPDATE_QTY:
-      const originArr = state.filter(
-        (item) => item.productId !== action.item.productId
-      );
-      return originArr.concat(action.item);
+      let index = state.findIndex((item) => item.id === action.item.id);
+      state[index] = action.item;
+      return state;
     default:
       return state;
   }
