@@ -8,7 +8,7 @@ const AdminProductCard = (props) => {
   const handleDelete = props.handleDelete;
   return (
     <div className="admin-each-product-layout">
-      <Link to="todo">
+      <Link to={`/manage/products/${product.id}`}>
         <img className="admin-product-img" src={product.imageUrl} />
       </Link>
       <div className="admin-product-detail">
