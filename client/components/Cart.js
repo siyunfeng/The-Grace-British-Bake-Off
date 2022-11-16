@@ -20,14 +20,16 @@ class Cart extends React.Component {
     removeItem(item);
   }
 
-  handleQtyUpdate(event, item, index) {
+  handleQtyUpdate(event, item, itemId) {
     const newQty = event.target.value;
     this.setState((state) => {
       const newObject = { ...state.qtyInputs };
-      newObject[`${index}`] = newQty;
+      newObject[`${itemId}`] = newQty;
       return { qtyInputs: newObject };
     });
-    this.props.updateQty(newQty, item);
+    if (newQty) {
+      this.props.updateQty(newQty, item);
+    }
   }
 
   async componentDidMount() {
@@ -96,7 +98,7 @@ class Cart extends React.Component {
             <div className="cart-layout">
               <h2>Shopping Cart</h2>
               <div className="cart-products-layout">
-                {cart.map((op, index) => {
+                {cart.map((op) => {
                   cartPrice += parseFloat(op.item_total_price);
 
                   return (
@@ -131,9 +133,9 @@ class Cart extends React.Component {
                               min="1"
                               max={op.product.quantity}
                               placeholder="Update item here..."
-                              value={qtyInputs[`${index}`] || ''}
+                              value={qtyInputs[`${op.product.id}`] || ''}
                               onChange={(event) =>
-                                handleQtyUpdate(event, op, index)
+                                handleQtyUpdate(event, op, op.product.id)
                               }
                             />
                             {/* <button
