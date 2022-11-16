@@ -9,7 +9,6 @@ class Cart extends React.Component {
     super();
     this.state = {
       loading: true,
-      qtyInputs: {},
     };
     this.handleRemove = this.handleRemove.bind(this);
     this.handleQtyUpdate = this.handleQtyUpdate.bind(this);
@@ -20,13 +19,8 @@ class Cart extends React.Component {
     removeItem(item);
   }
 
-  handleQtyUpdate(event, item, itemId) {
+  handleQtyUpdate(event, item) {
     const newQty = event.target.value;
-    this.setState((state) => {
-      const newObject = { ...state.qtyInputs };
-      newObject[`${itemId}`] = newQty;
-      return { qtyInputs: newObject };
-    });
     if (newQty) {
       this.props.updateQty(newQty, item);
     }
@@ -49,7 +43,7 @@ class Cart extends React.Component {
 
       // if it is a guest user
       const existingOrder = JSON.parse(window.localStorage.getItem('order'));
-      console.log('existingOrder >>>> ', existingOrder);
+      // console.log('existingOrder >>>> ', existingOrder);
 
       if (!order.id && !existingOrder) {
         await createOrder(false);
@@ -133,17 +127,9 @@ class Cart extends React.Component {
                               min="1"
                               max={op.product.quantity}
                               placeholder="Update item here..."
-                              value={qtyInputs[`${op.product.id}`] || ''}
-                              onChange={(event) =>
-                                handleQtyUpdate(event, op, op.product.id)
-                              }
+                              value={op.num_items}
+                              onChange={(event) => handleQtyUpdate(event, op)}
                             />
-                            {/* <button
-                              type="button"
-                              onClick={() => handleUpdate(op)}
-                            >
-                              Update
-                            </button> */}
                           </div>
                         </div>
                       </div>
@@ -176,14 +162,14 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     getCart: (orderId) => dispatch(fetchCart(orderId)),
     removeItem: (item) => dispatch(removeItem(item)),
     createOrder: (setUserId) => dispatch(createOrder(setUserId)),
     getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
     getOrderByUser: () => dispatch(getOrderByUser()),
-    updateQty: (newQty, item) => dispatch(updateQty(newQty, item)),
+    updateQty: (newQty, item) => dispatch(updateQty(newQty, item, history)),
   };
 };
 
