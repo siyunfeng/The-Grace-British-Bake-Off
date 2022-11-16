@@ -95,18 +95,20 @@ class CheckoutPage extends React.Component {
       },
     ];
     return (
-      <form onSubmit={this.handleSubmit}>
-        {inputs.map((input) => (
-          <FormInput
-            key={input.id}
-            {...input}
-            value={this.state[input.name] ? this.state[input.name] : ''}
-            onChange={this.handleChange}
-          />
-        ))}
+      <div id="checkout" className="form-styling">
+        <form onSubmit={this.handleSubmit}>
+          {inputs.map((input) => (
+            <FormInput
+              key={input.id}
+              {...input}
+              value={this.state[input.name] ? this.state[input.name] : ''}
+              onChange={this.handleChange}
+            />
+          ))}
 
-        <button type="submit">Place Order</button>
-      </form>
+          <button type="submit">Place Order</button>
+        </form>
+      </div>
     );
   }
 }
