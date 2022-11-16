@@ -9,13 +9,23 @@ class Cart extends React.Component {
     super();
     this.state = {
       loading: true,
+      newQuantity: '',
     };
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleQtyUpdate = this.handleQtyUpdate.bind(this);
   }
 
   handleRemove(item) {
     const { removeItem } = this.props;
     removeItem(item);
+  }
+
+  handleQtyUpdate(event) {
+    this.setState({ newQuantity: event.target.value });
+  }
+
+  handleUpdate() {
+    return true;
   }
 
   async componentDidMount() {
@@ -65,9 +75,9 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    const { loading } = this.state;
-    const { handleRemove } = this;
-
+    const { loading, newQuantity } = this.state;
+    const { handleRemove, handleQtyUpdate, handleUpdate } = this;
+    console.log('newQuantity =', newQuantity);
     if (loading) {
       return (
         <main>
@@ -110,12 +120,25 @@ class Cart extends React.Component {
                           </button>
                         </div>
                         <div className="cart-quantity-option">
-                          <p>Unit Price: ${op.product.price}</p>
-                          <p>
-                            Quantity: {op.num_items}
-                            <input type="number" name="" />
-                          </p>
-                          <p>Product Subtotal: ${op.item_total_price}</p>
+                          <p>Quantity: {op.num_items} </p>
+                          <p>Subtotal: ${op.item_total_price}</p>
+                          <div>
+                            <input
+                              type="number"
+                              name="cart-quantity-input"
+                              min="1"
+                              max={op.product.quantity}
+                              placeholder={op.num_items}
+                              value={newQuantity}
+                              onChange={(event) => handleQtyUpdate(event)}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleUpdate(op)}
+                            >
+                              Update
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>

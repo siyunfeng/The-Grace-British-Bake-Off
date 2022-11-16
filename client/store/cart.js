@@ -5,10 +5,12 @@ import axios from 'axios';
 const SET_CART = 'SET_CART';
 const ADD_ITEM = 'ADD_ITEM';
 const REMOVE_ITEM = 'REMOVE_ITEM';
+const UPDATE_QTY = 'UPDATE_QTY';
 
 const _setCart = (cart) => ({ type: SET_CART, cart });
 const _addItem = (item) => ({ type: ADD_ITEM, item });
 const _removeItem = (removedItem) => ({ type: REMOVE_ITEM, removedItem });
+const _updateQty = () => ({ type: UPDATE_QTY });
 
 export const fetchCart = (orderId) => {
   return async (dispatch) => {
@@ -48,6 +50,17 @@ export const removeItem = (item) => {
       dispatch(_removeItem(removedItem));
     } catch (error) {
       console.log('store/cart/:orderId removeItem ERROR: ', error);
+      throw error;
+    }
+  };
+};
+
+export const updateQty = () => {
+  return async (dispatch) => {
+    try {
+      const { data: newQty } = await axios.put(`/`);
+    } catch (error) {
+      console.log('store/cart/:orderId updateQty ERROR: ', error);
       throw error;
     }
   };
