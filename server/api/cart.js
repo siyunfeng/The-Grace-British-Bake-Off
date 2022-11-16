@@ -86,8 +86,23 @@ router.delete('/:orderId', async (req, res, next) => {
 // PUT /api/cart/:orderId
 router.put('/:orderId', async (req, res, next) => {
   try {
-    const order = await Order.findByPk(req.params.orderId);
-    res.send(await order.update(req.body));
+    const { newQty, item } = req.body;
+    if (newQty) {
+      const updatedItem = await Order_Product.findByPk(item.id);
+      await updatedItem.update({ num_items: parseInt(newQty) });
+      await updatedItem.setItemTotalPrice();
+      const existingItem = await Order_Product.findOne({
+        where: {
+          orderId: req.params.orderId,
+          productId: item.productId,
+        },
+        include: Product,
+      });
+      res.send(existingItem);
+    } else {
+      const order = await Order.findByPk(req.params.orderId);
+      res.send(await order.update(req.body));
+    }
   } catch (err) {
     next(err);
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchCart, removeItem } from '../store/cart';
+import { fetchCart, removeItem, updateQty } from '../store/cart';
 import { createOrder, getOrder, getOrderByUser } from '../store';
 
 class Cart extends React.Component {
@@ -9,13 +9,25 @@ class Cart extends React.Component {
     super();
     this.state = {
       loading: true,
+      qtyInputs: {},
     };
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleQtyUpdate = this.handleQtyUpdate.bind(this);
   }
 
   handleRemove(item) {
     const { removeItem } = this.props;
     removeItem(item);
+  }
+
+  handleQtyUpdate(event, item, index) {
+    const newQty = event.target.value;
+    this.setState((state) => {
+      const newObject = { ...state.qtyInputs };
+      newObject[`${index}`] = newQty;
+      return { qtyInputs: newObject };
+    });
+    this.props.updateQty(newQty, item);
   }
 
   async componentDidMount() {
@@ -65,8 +77,8 @@ class Cart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    const { loading } = this.state;
-    const { handleRemove } = this;
+    const { loading, qtyInputs } = this.state;
+    const { handleRemove, handleQtyUpdate } = this;
 
     if (loading) {
       return (
@@ -84,7 +96,7 @@ class Cart extends React.Component {
             <div className="cart-layout">
               <h2>Shopping Cart</h2>
               <div className="cart-products-layout">
-                {cart.map((op) => {
+                {cart.map((op, index) => {
                   cartPrice += parseFloat(op.item_total_price);
 
                   return (
@@ -110,12 +122,27 @@ class Cart extends React.Component {
                           </button>
                         </div>
                         <div className="cart-quantity-option">
-                          <p>Unit Price: ${op.product.price}</p>
-                          <p>
-                            Quantity: {op.num_items}
-                            <input type="number" name="" />
-                          </p>
-                          <p>Product Subtotal: ${op.item_total_price}</p>
+                          <p>Quantity: {op.num_items} </p>
+                          <p>Subtotal: ${op.item_total_price}</p>
+                          <div>
+                            <input
+                              type="number"
+                              name="cart-quantity-input"
+                              min="1"
+                              max={op.product.quantity}
+                              placeholder="Update item here..."
+                              value={qtyInputs[`${index}`] || ''}
+                              onChange={(event) =>
+                                handleQtyUpdate(event, op, index)
+                              }
+                            />
+                            {/* <button
+                              type="button"
+                              onClick={() => handleUpdate(op)}
+                            >
+                              Update
+                            </button> */}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -154,6 +181,7 @@ const mapDispatch = (dispatch) => {
     createOrder: (setUserId) => dispatch(createOrder(setUserId)),
     getExistingOrder: (orderId) => dispatch(getOrder(orderId)),
     getOrderByUser: () => dispatch(getOrderByUser()),
+    updateQty: (newQty, item) => dispatch(updateQty(newQty, item)),
   };
 };
 
