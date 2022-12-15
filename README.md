@@ -1,57 +1,33 @@
+![](/The-Grace-British-Bake-Off-README-banner.png)
 
+# The Grace British Bake Off
 
+[Vist our website here](https://grace-shopper-e.onrender.com/)
 
+E-commerce site selling baked goods. Our pastries are based on our favorite bakery show 'The Great British Bake Off'.
 
+---
 
-# grace-shopper
+## Team
 
-=======
+- [Lauren Baca](https://www.linkedin.com/in/laurenmhbaca/)
+- [Allie Wang](https://www.linkedin.com/in/allie-hc-wang/)
+- [Siyun Feng](https://www.linkedin.com/in/siyunfeng/)
+- [Christine Zheng](https://www.linkedin.com/in/zchristine/)
 
-# FS-App-Template
+## Technologies
 
----testing---
+- NodeJS
+- JavaScript
+- React
+- Redux
+- Postgres
+- Express
+- Sequelize
+- HTML
+- CSS
 
-## Setup
+## Getting Started
 
-To use this as boilerplate, you'll need to take the following steps:
+Sync and seed the database by running `npm run seed`. Running `npm run start:dev` will make great things happen!
 
-- Don't fork or clone this repo! Instead, create a new, empty
-  directory on your machine and `git init` (or create an empty repo on
-  Github and clone it to your local machine)
-
-- Now you will have to add the fs-app-template as a remote and merge it into your own repository.
-
-```
-git remote add boilermaker git@github.com:FullstackAcademy/fs-app-template.git
-git fetch boilermaker
-git merge boilermaker/main
-git branch -m master main
-```
-
-## Customize
-
-Now that you've got the code, follow these steps to get acclimated:
-
-- Update project name and description in `package.json`
-- `npm install`
-- Create two postgres databases (`MY_APP_NAME` should match the `name`
-  parameter in `package.json`):
-- These commands will create both your **development** and **test** databases
-
-```
-createdb <YOUR APP NAME HERE FROM package.json>
-createdb <YOUR APP NAME HERE FROM package.json>-test
-```
-
-- By default, running `npm test` will use your test database, while
-  regular development uses development database
-
-## Start
-
-Sync and seed your database by running `npm run seed`. Running `npm run start:dev` will make great things happen!
-
-- start:dev will both start your server and build your client side files using webpack
-- start:dev:logger is the same as start:dev, but you will see your SQL queries (can be helpful for debugging)
-- start:dev:seed will start your server and also seed your database (this is useful when you are making schema changes and you don't want to run your seed script separately)
-
-> > > > > > > boilermaker/main
