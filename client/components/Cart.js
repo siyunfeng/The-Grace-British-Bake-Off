@@ -43,27 +43,20 @@ class Cart extends React.Component {
 
       // if it is a guest user
       const existingOrder = JSON.parse(window.localStorage.getItem('order'));
-      // console.log('existingOrder >>>> ', existingOrder);
 
       if (!order.id && !existingOrder) {
         await createOrder(false);
-        console.log('created order successfully! new order:', this.props.order);
 
         await getCart(this.props.order.id);
         this.setState({ loading: false });
       } else if (!existingOrder) {
         await createOrder();
-        console.log(
-          'fix bug -- create order successfully! new order:',
-          this.props.order
-        );
       } else {
         await getExistingOrder(existingOrder.id);
         await getCart(this.props.order.id);
         this.setState({ loading: false });
       }
     } else {
-      console.log('This is an auth user');
       // this is an authorized user, dispatch thunk to get order
       await this.props.getOrderByUser();
       await getCart(this.props.order.id);

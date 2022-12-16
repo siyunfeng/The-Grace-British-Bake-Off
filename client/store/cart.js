@@ -27,7 +27,6 @@ export const fetchCart = (orderId) => {
 export const addToCart = (orderId, product, quantityInput) => {
   return async (dispatch) => {
     try {
-      // console.log('Add to cart thunk -- orderId: ', orderId);
       const { data: item } = await axios.post(`/api/cart/${orderId}`, {
         num_items: quantityInput,
         product,

@@ -4,20 +4,6 @@ const {
 } = require('../db');
 module.exports = router;
 
-/* Lauren's original code:
-router.get('/:orderId', async (req, res, next) => {
-  try {
-    const cartOrder = await Order.findOne({
-      where: { id: req.params.orderId },
-      include: { model: Order_Product, include: { model: Product } },
-    });
-    res.json(cartOrder);
-  } catch (err) {
-    next(err);
-  }
-});
-*/
-
 // GET /cart/:orderId
 router.get('/:orderId', async (req, res, next) => {
   try {
