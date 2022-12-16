@@ -56,23 +56,16 @@ class SingleProduct extends React.Component {
     // if guest
     if (!user) {
       const existingOrder = JSON.parse(window.localStorage.getItem('order'));
-      console.log('existingOrder >>>> ', existingOrder);
 
       if (!order.id && !existingOrder) {
         await createOrder(false);
-        console.log('created order successfully! new order:', this.props.order);
       } else if (!existingOrder) {
         await createOrder();
-        console.log(
-          'fix bug -- create order successfully! new order:',
-          this.props.order
-        );
       } else {
         await getExistingOrder(existingOrder.id); // existingOrder can be null, need to cover that scenario
       }
     } else {
-      console.log('This is an auth user');
-
+      // auth user
       await this.props.getOrderByUser();
     }
   }

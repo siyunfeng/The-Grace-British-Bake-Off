@@ -7,8 +7,6 @@ const {
 const requireToken = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log('requireToken Middleware -- token: ', token);
-
     const user = await User.findByToken(token);
     req.user = user;
     next();
@@ -20,8 +18,6 @@ const requireToken = async (req, res, next) => {
 // GET /api/order
 router.get('/', requireToken, async (req, res, next) => {
   try {
-    // console.log('magic methods for user: ', Object.keys(User.prototype));
-
     // based on user token, check if any existing unfulfilled order
     const existingOrder = await Order.findOne({
       where: {
@@ -31,10 +27,10 @@ router.get('/', requireToken, async (req, res, next) => {
     });
 
     if (!existingOrder) {
-      console.log('api -- no existingOrder: ', existingOrder);
+      // no existing order
       res.json({});
     } else {
-      console.log('api -- existingOrder: ', existingOrder);
+      // there is an existing order
       res.json(existingOrder);
     }
   } catch (error) {
@@ -82,10 +78,6 @@ router.put('/:orderId', requireToken, async (req, res, next) => {
       // when user does not have any existing unfulfilled order, then continue using local storage order (assign user to that order)
       await existingOrder.setUser(req.user.id);
     } else if (consolidate) {
-      console.log('consolidate -- verify order ID: ', req.params.orderId);
-      console.log('consolidate -- localCartId: ', localCartId);
-      console.log('consolidate -- productId: ', productId);
-
       const localCartItem = await Order_Product.findOne({
         where: {
           orderId: localCartId,
@@ -102,7 +94,7 @@ router.put('/:orderId', requireToken, async (req, res, next) => {
 
       // consolidate the local storage items with the existing items in order
       const newQty = existingCartItem.num_items + localCartItem.num_items;
-      console.log('newQty: ', newQty);
+
       await existingCartItem.update({ num_items: newQty });
       await existingCartItem.setItemTotalPrice();
 
@@ -111,15 +103,6 @@ router.put('/:orderId', requireToken, async (req, res, next) => {
     } else if (localCartId) {
       // if consolidation is not required, just update the local storage item's order id to the existing order id
 
-      console.log(
-        'magic methods for Order_Product: ',
-        Object.keys(Order_Product.prototype)
-      );
-
-      console.log('verify order ID: ', req.params.orderId);
-      console.log('localCartId: ', localCartId);
-      console.log('productId: ', productId);
-
       const itemToUpdate = await Order_Product.findOne({
         where: {
           orderId: localCartId,
@@ -127,10 +110,9 @@ router.put('/:orderId', requireToken, async (req, res, next) => {
         },
       });
 
-      console.log('itemToUpdate: ', itemToUpdate);
       const check = await itemToUpdate.setOrder(existingOrder);
 
-      console.log('check the updated item in Order_Product: ', check);
+      // console.log('check the updated item in Order_Product: ', check);
     }
 
     res.send(existingOrder);

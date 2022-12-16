@@ -8,14 +8,6 @@ const bakery = [
     description: `When it comes to fall spices, we're here for timely, deep flavors of ginger, nutmeg, clove, cinnamon and molasses — because pumpkin isn't the only fall flavor to love. This rich, seasonal cookie is sure to delight thanks to nuanced flavors freckled with melty Valrhona chocolate. It's crispy, it's ooey-gooey, and it's only here for the season, so don't sleep on this one. `,
   },
   {
-    name: 'Dark Chocolate Peanut Butter Chip Cookies',
-    price: 15,
-    quantity: 100,
-    imageUrl:
-      'https://cdn.shopify.com/s/files/1/0100/4575/1377/products/Levain_PDP_DCPBC_Carousel_2_2000x.jpg?v=1659706339',
-    description: `Sweet, savory and perfectly balanced, these cookies satisfy cravings for peanut butter and chocolate lovers. Dark chocolate cookie dough is packed with soft, smooth peanut butter chips to create the perfect cookie confection. `,
-  },
-  {
     name: 'Oatmeal Rasin Cookies',
     price: 15,
     quantity: 100,

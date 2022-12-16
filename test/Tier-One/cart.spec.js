@@ -18,8 +18,6 @@ describe('Cart routes', () => {
     it('GET /api/cart/:orderId', async () => {
       const res = await request(app).get('/api/cart/1').expect(200);
 
-      console.log(res.body);
-
       expect(res.body).to.be.an('object');
       // expect(res.body).to.deep.equal({
       //   test: 'test to see what if res.body has correct info',

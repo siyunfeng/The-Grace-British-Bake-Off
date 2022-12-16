@@ -22,24 +22,16 @@ export class AllProducts extends React.Component {
     // if guest
     if (!user) {
       const existingOrder = JSON.parse(window.localStorage.getItem('order'));
-      console.log('existingOrder >>>> ', existingOrder);
 
       if (!order.id && !existingOrder) {
         await createOrder();
-        console.log('create order successfully! new order:', this.props.order);
       } else if (!existingOrder) {
         await createOrder();
-        console.log(
-          'fix bug -- create order successfully! new order:',
-          this.props.order
-        );
       } else {
         await getExistingOrder(existingOrder.id);
       }
     } else {
-      // if that's an auth user
-      console.log('This is an auth user');
-
+      // if it's an auth user
       await this.props.getOrderByUser();
     }
   }
