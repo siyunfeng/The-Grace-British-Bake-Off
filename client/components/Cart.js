@@ -30,17 +30,8 @@ class Cart extends React.Component {
     const { user, order, getCart, createOrder, getExistingOrder } = this.props;
 
     const { orderId } = this.props.match.params;
-    // await getCart(orderId);
-    // this.setState({ loading: false });
 
-    // if there is a valid orderId, load cart
-    // if (orderId) {
-    //   await getCart(orderId);
-    //   this.setState({ loading: false });
-    // } else
     if (!user) {
-      // need to determine the orderId
-
       // if it is a guest user
       const existingOrder = JSON.parse(window.localStorage.getItem('order'));
 
@@ -82,44 +73,44 @@ class Cart extends React.Component {
       return (
         <main>
           {hasCart ? (
-            <div className="cart-layout">
+            <div className='cart-layout'>
               <h2>Shopping Cart</h2>
-              <div className="cart-products-layout">
+              <div className='cart-products-layout'>
                 {cart.map((op) => {
                   cartPrice += parseFloat(op.item_total_price);
 
                   return (
-                    <div key={op.product.id} className="cart-main">
-                      <div className="cart-each-product">
+                    <div key={op.product.id} className='cart-main'>
+                      <div className='cart-each-product'>
                         <div>
                           <Link to={`/shop/products/${op.product.id}`}>
                             <img
-                              className="all-products-img"
+                              className='all-products-img'
                               src={op.product.imageUrl}
                             />
                           </Link>
                         </div>
 
-                        <div className="cart-product-detail">
+                        <div className='cart-product-detail'>
                           <h3>{op.product.name}</h3>
                           <button
-                            className="remove-button"
-                            type="button"
+                            className='remove-button'
+                            type='button'
                             onClick={() => handleRemove(op)}
                           >
                             Remove
                           </button>
                         </div>
-                        <div className="cart-quantity-option">
+                        <div className='cart-quantity-option'>
                           <p>Quantity: {op.num_items} </p>
                           <p>Subtotal: ${op.item_total_price}</p>
                           <div>
                             <input
-                              type="number"
-                              name="cart-quantity-input"
-                              min="1"
+                              type='number'
+                              name='cart-quantity-input'
+                              min='1'
                               max={op.product.quantity}
-                              placeholder="Update item here..."
+                              placeholder='Update item here...'
                               value={op.num_items}
                               onChange={(event) => handleQtyUpdate(event, op)}
                             />
@@ -129,13 +120,13 @@ class Cart extends React.Component {
                     </div>
                   );
                 })}
-                <div className="cart-each-product order-summary">
+                <div className='cart-each-product order-summary'>
                   <h2>Order Summary - {cart.length} Item(s)</h2>
                   <h2>Order Total: ${cartPrice}</h2>
                 </div>
               </div>
-              <Link to="/checkout">
-                <button className="checkout-button">CHECKOUT</button>
+              <Link to='/checkout'>
+                <button className='checkout-button'>Check Out</button>
               </Link>
             </div>
           ) : (

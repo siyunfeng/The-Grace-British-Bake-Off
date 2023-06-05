@@ -111,8 +111,6 @@ router.put('/:orderId', requireToken, async (req, res, next) => {
       });
 
       const check = await itemToUpdate.setOrder(existingOrder);
-
-      // console.log('check the updated item in Order_Product: ', check);
     }
 
     res.send(existingOrder);

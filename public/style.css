@@ -16,7 +16,7 @@ body {
   font-family: 'Rye', 'Limelight', sans-serif;
   margin-top: 1.5em;
   font-size: 30pt;
-  color: #b68d40;
+  color: #957449;
 }
 
 a {
@@ -138,12 +138,8 @@ input {
   width: 100%;
 }
 
-/* form div {
-  margin: 1em;
-  display: inline-block;
-} */
-
 button {
+  font-family: 'Special Elite', 'Oswald', 'Sono', sans-serif;
   padding: 1em 2em;
   border: none;
   font-size: 1em;
@@ -172,16 +168,17 @@ button:hover {
   width: 300px;
   border-radius: 30px;
   margin: 1em auto;
-  box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.25);
 }
 
 .each-product-layout {
-  margin: 1em;
+  margin: 1.5rem;
   font-size: 11pt;
   width: 350px;
+  border: 2px solid white;
   border-radius: 30px;
   box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.25);
   transition: transform 300ms, box-shadow 300ms;
+  background-color: #e9cf9e;
 }
 
 .each-product-layout:hover {
@@ -324,9 +321,6 @@ button:hover {
   width: 250px;
   height: 150px;
 }
-
-/* .user-header{
-} */
 
 .user-detail {
   font-size: small;
