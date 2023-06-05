@@ -61,19 +61,6 @@ async function seed() {
 
   // Products
   const productsArr = [];
-  /*
-  // Original faker product data by Allie
-  Array.from({ length: 100 }).forEach((value, idx) => {
-    productsArr.push(
-      Product.create({
-        name: faker.commerce.productName() + ' ' + idx, // added idx to the end to make sure name's uniqueness
-        quantity: Math.floor(Math.random() * 100 + 1),
-        price: faker.commerce.price(),
-        description: faker.commerce.productDescription(),
-      })
-    );
-  });
-  */
 
   bakeryData.forEach((bakery) => {
     productsArr.push(
