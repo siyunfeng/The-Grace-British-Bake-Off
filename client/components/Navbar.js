@@ -30,9 +30,9 @@ const Navbar = ({ handleClick, isLoggedIn, userType, orderId }) => (
         <div>
           {/* The navbar will show these links before you log in */}
           <Link to='/shop'>Shop</Link>
+          <Link to={`/cart/${orderId}`}>Cart</Link>
           <Link to='/login'>Login</Link>
           <Link to='/signup'>Sign Up</Link>
-          <Link to={`/cart/${orderId}`}>Cart</Link>
         </div>
       )}
     </nav>

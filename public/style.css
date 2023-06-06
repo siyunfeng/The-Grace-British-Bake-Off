@@ -27,6 +27,10 @@ label {
   display: block;
 }
 
+nav div {
+  font-family: 'Sono', sans-serif;
+}
+
 nav a {
   display: inline-block;
   margin: 1em;
@@ -215,6 +219,10 @@ button:hover {
 
 .single-product-description {
   margin: 3em auto;
+}
+
+.single-product-description p {
+  word-spacing: 2px;
 }
 
 .purchase-container {
@@ -414,6 +422,11 @@ button:hover {
 
 .footer {
   margin: 3rem auto;
+}
+
+img.footer-logo {
+  border-radius: 30%;
+  width: 35px;
 }
 
 .contributors a {
