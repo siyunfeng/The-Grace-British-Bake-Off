@@ -223,7 +223,7 @@ button:hover {
 }
 
 .purchase-option {
-  margin-top: 1em;
+  margin: 1em 0 0 0;
   font-size: 16pt;
   height: 50px;
   width: 180px;
@@ -245,6 +245,37 @@ button:hover {
 #add-to-cart-button:active {
   box-shadow: #422800 2px 2px 0 0;
   transform: translate(2px, 8px);
+}
+
+@media (min-width: 320px) and (max-width: 1024px) {
+  .single-product-layout {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5em;
+  }
+  
+  .single-product-img {
+    object-fit: cover;
+    height: 240px;
+    width: 320px;
+    margin: 2rem auto;
+  }
+  
+  .single-product-info {
+    width: 95%;
+    text-align: left;
+  }
+  
+  .purchase-container {
+    flex-direction: column;
+  }
+  
+  #add-to-cart-button {
+    margin: 1em auto;
+  }
 }
 
 /* Cart page */
