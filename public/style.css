@@ -163,6 +163,7 @@ button:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   margin: 2em;
 }
 
@@ -192,6 +193,9 @@ button:hover {
 
 .each-product-detail {
   color: black;
+  width: 300px;
+  margin: auto;
+  text-align: center;
 }
 
 .product-amount-input {
