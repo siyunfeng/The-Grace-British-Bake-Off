@@ -194,6 +194,10 @@ button:hover {
   color: black;
 }
 
+.product-amount-input {
+  width: 20px;
+}
+
 /* Single product page */
 .single-product-layout {
   display: flex;
@@ -422,11 +426,7 @@ button:hover {
 
 .footer {
   margin: 3rem auto;
-}
-
-img.footer-logo {
-  border-radius: 30%;
-  width: 35px;
+  font-family: 'Sono', sans-serif;
 }
 
 .contributors a {
