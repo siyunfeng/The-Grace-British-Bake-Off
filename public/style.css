@@ -194,6 +194,10 @@ button:hover {
   color: black;
 }
 
+.product-amount-input {
+  width: 20px;
+}
+
 /* Single product page */
 .single-product-layout {
   display: flex;

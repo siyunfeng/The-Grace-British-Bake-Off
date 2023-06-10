@@ -30,4 +30,3 @@ E-commerce site selling baked goods. Our pastries are based on our favorite bake
 ## Getting Started
 
 Sync and seed the database by running `npm run seed`. Running `npm run start:dev` will make great things happen!
-
