@@ -92,7 +92,12 @@ class Cart extends React.Component {
                         </div>
 
                         <div className='cart-product-detail'>
-                          <h3>{op.product.name}</h3>
+                          <Link
+                            to={`/shop/products/${op.product.id}`}
+                            className='link-to-product'
+                          >
+                            <h3>{op.product.name}</h3>
+                          </Link>
                           <button
                             className='remove-button'
                             type='button'
@@ -121,7 +126,7 @@ class Cart extends React.Component {
                   );
                 })}
                 <div className='cart-each-product order-summary'>
-                  <h2>Order Summary - {cart.length} Item(s)</h2>
+                  <h2>Order Summary: {cart.length} Item(s)</h2>
                   <h2>Order Total: ${cartPrice}</h2>
                 </div>
               </div>

@@ -11,6 +11,7 @@ class SingleProduct extends React.Component {
       loading: true,
       errorMessage: '',
       quantityInput: 1,
+      isAddClicked: false,
     };
     this.handleQuantityInput = this.handleQuantityInput.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
@@ -38,10 +39,12 @@ class SingleProduct extends React.Component {
 
   async handleAddToCart(event, product) {
     event.preventDefault();
-    const { errorMessage, quantityInput } = this.state;
+    const { errorMessage, quantityInput, isAddClicked } = this.state;
     const { addToCart } = this.props;
     if (errorMessage.length === 0) {
       await addToCart(this.props.order.id, product, quantityInput);
+      this.setState({ isAddClicked: true });
+      setTimeout(() => this.setState({ isAddClicked: false }), 1500);
     }
   }
 
@@ -72,48 +75,57 @@ class SingleProduct extends React.Component {
 
   render() {
     const { product } = this.props;
-    const { loading, errorMessage, quantityInput } = this.state;
+    const { loading, errorMessage, quantityInput, isAddClicked } = this.state;
     const { handleAddToCart, handleQuantityInput } = this;
 
     return (
       <main>
         {loading && <p>Loading product details...</p>}
         {product ? (
-          <div key={product.id} className="single-product-layout">
+          <div key={product.id} className='single-product-layout'>
             <div>
-              <img className="single-product-img" src={product.imageUrl} />
+              <img className='single-product-img' src={product.imageUrl} />
             </div>
-            <div className="single-product-info">
+            <div className='single-product-info'>
               <div>
                 <h1>{product.name}</h1>
               </div>
               <h2>${product.price}</h2>
-              <div className="single-product-description">
+              <div className='single-product-description'>
                 <h3>Product detail:</h3>
                 <p>{product.description}</p>
               </div>
               <div>Stock: {product.quantity}</div>
               {product.quantity ? (
                 <div>
-                  <div className="purchase-container">
+                  <div className='purchase-container'>
                     <input
-                      className="purchase-option"
-                      type="number"
-                      id="purchase-amount"
-                      name="purchaseAmount"
-                      min="1"
+                      className='purchase-option'
+                      type='number'
+                      id='purchase-amount'
+                      name='purchaseAmount'
+                      min='1'
                       max={product.quantity}
                       value={quantityInput}
                       onChange={handleQuantityInput}
                     />
-                    <button
-                      className="purchase-option"
-                      id="add-to-cart-button"
-                      type="button"
-                      onClick={(event) => handleAddToCart(event, product)}
-                    >
-                      Add to Cart
-                    </button>
+                    <div className='add-to-cart-container'>
+                      {isAddClicked ? (
+                        <span className='tooltip'>
+                          added {quantityInput} item(s) to cart
+                        </span>
+                      ) : (
+                        ''
+                      )}
+                      <button
+                        className='purchase-option'
+                        id='add-to-cart-button'
+                        type='button'
+                        onClick={(event) => handleAddToCart(event, product)}
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
                   </div>
                   {errorMessage.length > 0 && <p>{errorMessage}</p>}
                 </div>
