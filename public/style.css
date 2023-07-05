@@ -10,6 +10,7 @@
 body {
   font-family: 'Special Elite', 'Oswald', 'Sono', sans-serif;
   text-align: center;
+  background-color: #f4ede4ea;
 }
 
 #shop-name {
@@ -179,11 +180,10 @@ button:hover {
   margin: 1.5rem 2rem;
   font-size: 11pt;
   width: 350px;
-  border: 2px solid white;
   border-radius: 30px;
   box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.25);
-  transition: transform 300ms, box-shadow 300ms;
-  background-color: #fdeedb;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: white;
 }
 
 .each-product-layout:hover {
@@ -218,7 +218,11 @@ button:hover {
   width: 500px;
   border-radius: 20px;
   box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.25);
-  transition: transform 300ms, box-shadow 300ms;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.single-product-img:hover {
+  transform: scale(1.1);
 }
 
 .single-product-info {
@@ -230,7 +234,8 @@ button:hover {
 }
 
 .single-product-description p {
-  word-spacing: 2px;
+  word-spacing: 4px;
+  line-height: 1.6;
 }
 
 .purchase-container {
