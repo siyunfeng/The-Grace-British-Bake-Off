@@ -2,7 +2,7 @@
 
 # The Grace British Bake Off
 
-[Vist our website here](https://grace-shopper-e.onrender.com/)
+[Vist our website here](https://grace-bake-off.onrender.com/)
 
 E-commerce site selling baked goods. Our pastries are based on our favorite bakery show 'The Great British Bake Off'.
 
