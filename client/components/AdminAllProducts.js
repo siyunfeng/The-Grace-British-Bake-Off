@@ -34,13 +34,15 @@ export class AdminAllProducts extends React.Component {
       return (
         <main>
           {hasProducts ? (
-            <div>
+            <>
               <p>Total # of products: {products.length}</p>
-              <p>
-                <Link to="/manage/products/create">Add a new product</Link>
-              </p>
+              <button>
+                <Link to='/manage/products/create' className='link'>
+                  Add a new product
+                </Link>
+              </button>
               <AdminProductsList products={products} />
-            </div>
+            </>
           ) : (
             <h1>Products Coming Soon!</h1>
           )}

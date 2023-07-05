@@ -24,6 +24,10 @@ a {
   text-decoration: none;
 }
 
+a.link {
+  color: inherit;
+}
+
 label {
   display: block;
 }
@@ -145,14 +149,14 @@ input {
 
 button {
   font-family: 'Special Elite', 'Oswald', 'Sono', sans-serif;
-  padding: 1em 2em;
+  padding: 1rem 1.5rem;
+  font-size: 16px;
   border: none;
-  font-size: 1em;
-  transition: all 1s ease;
   outline: none;
-  letter-spacing: 0.1em;
+  transition: all 1s ease;
   border-radius: 10px;
   cursor: pointer;
+  background-color: rgb(194, 137, 84);
 }
 
 button:hover {
@@ -345,7 +349,7 @@ button:hover {
 }
 
 /* User home page */
-.user-welcome-page {
+.user-home-greeting, .admin-home-greeting {
   font-family: 'Life Savers', sans-serif;
   color: #104210;
 }
@@ -356,13 +360,28 @@ button:hover {
 }
 
 /* Admin manage page */
+.admin-manage-page {
+  width: 80%;
+  margin: auto;
+}
+
 .admin-welcome-img {
   object-fit: cover;
-  width: 400px;
-  height: 400px;
-  margin: 1em;
+  width: 300px;
+  height: 300px;
+  margin: auto;
   border-radius: 30px;
   box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.25);
+}
+
+.admin-manage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-manage > button {
+  margin: 1rem;
 }
 
 /* Admin all users page */
@@ -411,30 +430,62 @@ button:hover {
 }
 
 .admin-each-product-layout {
-  margin: 1em;
-  border: solid rgb(173, 167, 167);
+  margin: 1rem;
   border-radius: 20px;
   flex-grow: 1;
   padding: 1em;
-  width: 300px;
-  height: 450px;
   display: flex;
   flex-direction: column;
+  background-color: white;
+  box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.25);
 }
 
 .admin-product-detail {
   padding: 0.25em;
 }
 
-.admin-product-delete-button {
-  background-color: red;
-  font-family: 'Special Elite', Courier, monospace;
-  margin: 0.5em;
+.product-edit-delete {
+  display: flex;
+  justify-content: space-between;
 }
 
-.admin-product-delete-button:hover {
-  background-color: #cc0000;
+.admin-edit-delte-button {
   color: white;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  touch-action: manipulation;
+  margin: 0 0.5rem;
+}
+
+.admin-product-delete-button {
+  background-color: #f40800;
+  border: 1px solid #f40800;
+}
+
+.admin-product-edit-button {
+  background-color: #1899D6;
+  border: 1px solid #1899D6;
+}
+
+.admin-edit-delte-button:hover, .admin-edit-delte-button:active {
+  background-color: initial;
+  background-position: 0 0;
+}
+
+.admin-product-delete-button:hover, .admin-product-delete-button:active {
+  color: #f40800;
+}
+
+.admin-product-edit-button:hover, .admin-product-edit-button:active {
+  color: #1899D6;
+}
+
+.admin-edit-delte-button:active {
+  opacity: 0.5;
 }
 
 /* footer */
