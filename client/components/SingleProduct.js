@@ -44,7 +44,7 @@ class SingleProduct extends React.Component {
     if (errorMessage.length === 0) {
       await addToCart(this.props.order.id, product, quantityInput);
       this.setState({ isAddClicked: true });
-      setTimeout(() => this.setState({ isAddClicked: false }), 1500);
+      setTimeout(() => this.setState({ isAddClicked: false }), 1800);
     }
   }
 
@@ -97,7 +97,7 @@ class SingleProduct extends React.Component {
               </div>
               <div>Stock: {product.quantity}</div>
               {product.quantity ? (
-                <div>
+                <div className='purchase-section'>
                   <div className='purchase-container'>
                     <input
                       className='purchase-option'
@@ -109,25 +109,25 @@ class SingleProduct extends React.Component {
                       value={quantityInput}
                       onChange={handleQuantityInput}
                     />
-                    <div className='add-to-cart-container'>
-                      {isAddClicked ? (
-                        <span className='tooltip'>
-                          added {quantityInput} item(s) to cart
-                        </span>
-                      ) : (
-                        ''
-                      )}
-                      <button
-                        className='purchase-option'
-                        id='add-to-cart-button'
-                        type='button'
-                        onClick={(event) => handleAddToCart(event, product)}
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
+                    <button
+                      className='purchase-option'
+                      id='add-to-cart-button'
+                      type='button'
+                      onClick={(event) => handleAddToCart(event, product)}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
                   {errorMessage.length > 0 && <p>{errorMessage}</p>}
+                  <div className='add-to-cart-container'>
+                    {isAddClicked ? (
+                      <span className='tooltip'>
+                        added {quantityInput} item(s) to cart
+                      </span>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </div>
               ) : (
                 <span>Out of Stock</span>

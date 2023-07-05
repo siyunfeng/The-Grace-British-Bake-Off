@@ -82,7 +82,7 @@ class Cart extends React.Component {
                   return (
                     <div key={op.product.id} className='cart-main'>
                       <div className='cart-each-product'>
-                        <div>
+                        <div className='cart-img-container'>
                           <Link to={`/shop/products/${op.product.id}`}>
                             <img
                               className='all-products-img'
@@ -106,6 +106,7 @@ class Cart extends React.Component {
                             Remove
                           </button>
                         </div>
+
                         <div className='cart-quantity-option'>
                           <p>Quantity: {op.num_items} </p>
                           <p>Subtotal: ${op.item_total_price}</p>
@@ -126,8 +127,8 @@ class Cart extends React.Component {
                   );
                 })}
                 <div className='cart-each-product order-summary'>
-                  <h2>Order Summary: {cart.length} Item(s)</h2>
-                  <h2>Order Total: ${cartPrice}</h2>
+                  <h3>Order Summary: {cart.length} Item(s)</h3>
+                  <h3>Order Total: ${cartPrice}</h3>
                 </div>
               </div>
               <Link to='/checkout'>
