@@ -9,10 +9,10 @@ export const Home = (props) => {
 
   return (
     <div>
-      <h1 className="user-welcome-page">Welcome, {username}!</h1>
+      <h1 className='user-home-greeting'>Welcome, {username}!</h1>
       <img
-        className="user-welcome-img"
-        src="https://pbs.twimg.com/media/FePLpNrWAAIci7Z?format=jpg&name=large"
+        className='user-welcome-img'
+        src='https://pbs.twimg.com/media/FePLpNrWAAIci7Z?format=jpg&name=large'
       />
     </div>
   );
